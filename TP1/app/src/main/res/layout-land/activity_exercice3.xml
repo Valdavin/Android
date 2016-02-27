@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:text="@string/exercice3_main_ordinateur"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:textAlignment="center"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/ordi_papier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/papier"
+                android:background="#FF0000"
+                android:padding="5dp"
+                android:visibility="invisible"/>
+            <ImageView
+                android:id="@+id/ordi_caillou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/caillou"
+                android:background="#FF0000"
+                android:padding="5dp"
+                android:visibility="invisible"/>
+            <ImageView
+                android:id="@+id/ordi_ciseaux"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ciseaux"
+                android:background="#FF0000"
+                android:padding="5dp"
+                android:visibility="invisible"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/exercice3_resultat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="40dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:text="@string/exercice3_debut"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/exercice3_choisir_une_main"
+            android:textSize="20dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:textAlignment="center"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/joueur_papier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/papier"
+                android:background="#000000"
+                android:padding="5dp"
+                android:onClick="exercice3Valider"/>
+            <ImageView
+                android:id="@+id/joueur_caillou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/caillou"
+                android:background="#000000"
+                android:padding="5dp"
+                android:onClick="exercice3Valider"/>
+            <ImageView
+                android:id="@+id/joueur_ciseaux"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ciseaux"
+                android:background="#000000"
+                android:padding="5dp"
+                android:onClick="exercice3Valider"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/activity_horizontal_margin">
+        <TextView
+            android:id="@+id/exercice3_victoires"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exemple3_victoire"/>
+
+        <TextView
+            android:id="@+id/exercice3_defaites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exemple3_defaite"/>
+
+        <TextView
+            android:id="@+id/exercice3_égalités"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exemple3_egalite"
+            />
+    </LinearLayout>
+
+
+
+</LinearLayout>

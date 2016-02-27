@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Android : TP1</string>
+    <string name="exercice1">Exercice 1</string>
+    <string name="exercice2">Exercice 2</string>
+    <string name="exercice3">Exercice 3</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="title_activity_exercice1">Exercice1Activity</string>
+    <string name="exercice1_hello_world">Hello world!</string>
+    <string name="exercice1_bouton">Valider</string>
+    <string name="exercice1_text">Ecrire votre prénom et valider</string>
+
+    <string name="title_activity_exercice2">Exercice2Activity</string>
+    <string name="exercice2_question">Quelle a été la différence de buts lors du match de football opposant l\'équipe enseignante du département à l\'équipe étudiante ?</string>
+    <string name="exercice2_reponse1">+ 10 pour les enseignants</string>
+    <string name="exercice2_reponse2">0 Match nul</string>
+    <string name="exercice2_reponse3">+ 1 pour les étudiants</string>
+    <string name="exercice2_valider">Valider ma réponse</string>
+    <string name="exercice2_bravo">Bravo vous avez la bonne réponse !</string>
+    <string name="exercice2_echec">Loupé !</string>
+    <string name="exercice2_message">Choisir une réponse puis valider</string>
+
+    <string name="title_activity_exercice3">Exercice3Activity</string>
+    <string name="exercice3_choisir_une_main">Choisir une main</string>
+    <string name="exercice3_papier">Papier</string>
+    <string name="exercice3_cailloux">CaillouX</string>
+    <string name="exercice3_ciseaux">Ciseaux</string>
+    <string name="exercice3_main_ordinateur">Main de l\'ordinateur</string>
+    <string name="exercice3_debut">A vous de jouer !</string>
+    <string name="exercice3_victoire">Victoire !</string>
+    <string name="exercice3_egalite">Egalité !</string>
+    <string name="exercice3_defaite">Defaite !</string>
+    <string name="exemple3_victoire">Nombre de victoires :</string>
+    <string name="exemple3_defaite">Nombre de défaites :</string>
+    <string name="exemple3_egalite">Nombre d\'égalités :</string>
+    <string name="exemple3_zero">0</string>
+
+</resources>
