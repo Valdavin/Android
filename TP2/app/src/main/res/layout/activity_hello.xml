@@ -11,6 +11,7 @@
     tools:context="m4104c.tp2.HelloActivity">
 
     <TextView
+        android:id="@+id/activity_hello_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Hello World"
