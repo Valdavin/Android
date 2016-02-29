@@ -21,6 +21,7 @@ public class
     }
 
     public void changerPrenom(View view){
+        setResult(RESULT_OK);
         super.finish();
     }
 
