@@ -7,4 +7,5 @@
     <string name="title_activity_exercice4">Exercice4Activity</string>
     <string name="title_activity_exercice5">Exercice5Activity</string>
     <string name="title_activity_table_multiplication">TableMultiplicationActivity</string>
+    <string name="exercice5_valider">VALIDER</string>
 </resources>

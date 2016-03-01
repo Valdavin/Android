@@ -15,11 +15,18 @@
         android:textSize="24dp"/>
 
     <NumberPicker
+        android:id="@+id/exercice5_numero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
-
-
     </NumberPicker>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/exercice5_valider"
+        android:textSize="20sp"
+        android:onClick="exercice5_valider"/>
 
 </LinearLayout>
