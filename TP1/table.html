@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <style>
+        th {
+            color: #1D4C7A;
+            border-bottom: 1px solid #0B3E6F;
+        }
+    </style>
+    <script type="text/javascript">
+        var html = '<html> \
+          <head> \
+            <title></title> \
+            <meta content=""> \
+            <style> \
+                th { \
+                    color: #1D4C7A; \
+                    border-bottom: 1px solid #0B3E6F; \
+                } \
+            </style> \
+            </head> \
+            <body> \
+                <h1>Table multiplications</h1> \
+ \
+                <table> \
+                <th></th> \
+                        ';
+        var htmlEnd = '</table> \
+            </body> \
+          </html>';
+
+         var tableau = "";
+         var nbCol = parseInt(prompt("Nombre de colone ?"));
+
+        for (var i = 1; i <= nbCol; i++) tableau += "<th>" + i + "</th>\n";
+
+        for (var i = 1; i <= nbCol; i++) {
+            tableau += "<tr><th>" + i + "</th>";
+            for (var j = 1; j <= nbCol; j++) tableau += "<td>" + (i * j) + "</td>";
+            tableau += "</tr>";
+        }
+
+        document.write(html + tableau + htmlEnd);
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
