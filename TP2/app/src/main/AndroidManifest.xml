@@ -22,7 +22,9 @@
             android:name=".Exercice5Activity"
             android:label="@string/title_activity_exercice5" />
         <activity android:name=".HelloActivity" />
-        <activity android:name=".TableMultiplicationActivity"></activity>
+        <activity android:name=".TableMultiplicationActivity" />
+        <activity android:name=".VictoryActivity" />
+        <activity android:name=".LooseActivity"></activity>
     </application>
 
 </manifest>

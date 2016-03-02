@@ -8,4 +8,7 @@
     <string name="title_activity_exercice5">Exercice5Activity</string>
     <string name="title_activity_table_multiplication">TableMultiplicationActivity</string>
     <string name="exercice5_valider">VALIDER</string>
+    <string name="text_victoire">Bravo, vous avez gagné !</string>
+    <string name="JouerEncore">Jouer Encore</string>
+    <string name="CorigerFautes">Coriger fautes</string>
 </resources>
