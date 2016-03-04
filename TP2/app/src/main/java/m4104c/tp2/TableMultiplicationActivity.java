@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.GpsStatus;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.TypeVariable;
+import java.util.EventListener;
 
 public class TableMultiplicationActivity extends AppCompatActivity {
     public static final String TABLE_MULTIPLICATION_ERREUR = "erreurs";
@@ -46,6 +48,24 @@ public class TableMultiplicationActivity extends AppCompatActivity {
             et.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
             et.setInputType(InputType.TYPE_CLASS_NUMBER);
             et.setText("0");
+            View.OnFocusChangeListener l = new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    EditText edit = (EditText) v;
+                    if (hasFocus) {
+                        edit.setText("");
+                    } else {
+                        if (edit.getText().toString().equals("")) {
+                            System.out.println("--------  Valeur de l'EditText = \""+edit.getText().toString()+"\"");
+                            edit.setText("0");
+                        }
+                    }
+
+
+
+                }
+            };
+            et.setOnFocusChangeListener(l);
             et.setTextSize(15);
 
             ll.addView(tw);
