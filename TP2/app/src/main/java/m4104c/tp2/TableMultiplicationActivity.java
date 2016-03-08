@@ -32,6 +32,7 @@ public class TableMultiplicationActivity extends AppCompatActivity {
         numeroTabl = getIntent().getIntExtra(Exercice5Activity.EXERCICE_4_NUMERO, 42);
 
         LinearLayout MainLayout = (LinearLayout) findViewById(R.id.table_multiplication_layout);
+
         for (int i = 0; i<10; i++) {
             LinearLayout ll = new LinearLayout(this);
             ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
