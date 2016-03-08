@@ -7,27 +7,15 @@
     tools:context="m4104c.tp2.Exercice5Activity"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Choisis ta table de multiplication"
-        android:gravity="center"
-        android:textSize="24dp"/>
 
-    <NumberPicker
-        android:id="@+id/exercice5_numero"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
-    </NumberPicker>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="VALIDER"
+        android:text="Math"
         android:textSize="20sp"
-        android:onClick="exercice5_valider"/>
+        android:onClick="main_math"/>
 
 </LinearLayout>
 
