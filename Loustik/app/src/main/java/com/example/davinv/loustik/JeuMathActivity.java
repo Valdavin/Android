@@ -2,6 +2,7 @@ package com.example.davinv.loustik;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -12,6 +13,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class JeuMathActivity extends AppCompatActivity {
 
@@ -68,7 +71,7 @@ public class JeuMathActivity extends AppCompatActivity {
         if (view.getId() == R.id.Jeu_Math_Multiplication){
             Multiplication();
         } else if (view.getId() == R.id.Jeu_Math_Addition) {
-            //Addition
+            Addition();
         }
     }
 
@@ -100,7 +103,11 @@ public class JeuMathActivity extends AppCompatActivity {
     // ADDITION
 
 
+    public void Addition() {
+        View_Addition(Jeu_Math.creerAdition(10));
 
+
+    }
 
 
 
@@ -111,6 +118,67 @@ public class JeuMathActivity extends AppCompatActivity {
     //          VUES        //
     //////////////////////////
 
+
+    /////////////////////////
+    // ADDITION
+
+
+    public void View_Addition(ArrayList<Integer> liste_num) {
+        MainLayout.removeAllViews();
+
+
+        LinearLayout ln1 = new LinearLayout(this);
+        ln1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+        ln1.setGravity(Gravity.CENTER);
+        ln1.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView ln1_tw1 = new TextView(this);
+        ln1_tw1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        ln1_tw1.setTextSize(50);
+
+        EditText ln1_et1 = new EditText(this);
+        ln1_tw1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        ln1_tw1.setTextSize(50);
+
+        TextView tw1 = new TextView(this);
+        tw1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        tw1.setGravity(Gravity.CENTER);
+
+        LinearLayout ln2 = new LinearLayout(this);
+        ln2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,0f));
+        ln2.setWeightSum(0);
+
+        Button ln2_bt1 = new Button(this);
+        ln2_bt1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        ln2_bt1.setText("Corriger");
+        ln2_bt1.setTextSize(25);
+
+        Button ln2_bt2 = new Button(this);
+        ln2_bt2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        ln2_bt2.setText("Suivant");
+        ln2_bt2.setTextSize(25);
+
+
+        ln1.addView(ln1_tw1);
+        ln1.addView(ln1_et1);
+
+        ln2.addView(ln2_bt1);
+        ln2.addView(ln2_bt2);
+
+        MainLayout.addView(ln1);
+        MainLayout.addView(tw1);
+        MainLayout.addView(ln2);
+
+
+
+
+
+    }
+
+
+
+    /////////////////////////
+    // MULTIPLICATION
     /*
     * Affiche le choix du numéro de la table de multiplication.
     *
