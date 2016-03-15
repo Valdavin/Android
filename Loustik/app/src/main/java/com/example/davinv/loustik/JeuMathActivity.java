@@ -18,9 +18,21 @@ import java.util.ArrayList;
 
 public class JeuMathActivity extends AppCompatActivity {
 
+    // CONSTANTES
     public static final String TABLE_MULTIPLICATION_ERREUR = "erreurs";
     public static final int JEU_MATH_ACTIVITY_ERREUR_REQUEST = 0;
+    public static final int NOMBRE_D_ADDITION = 10;
+
+    //ADDITION
+    public ArrayList<Integer> listeAdd = new ArrayList<>();
+    public ArrayList<Integer> reponsesAdd = new ArrayList<>();
+    public int rep = 0;
+    public boolean estRep = false;
+
+    // MULTIPLICATION
     public static int numeroTabl = 42;
+
+    // CLASSES
     public JeuMathClass Jeu_Math ;
     public LinearLayout MainLayout;
 
@@ -71,6 +83,7 @@ public class JeuMathActivity extends AppCompatActivity {
         if (view.getId() == R.id.Jeu_Math_Multiplication){
             Multiplication();
         } else if (view.getId() == R.id.Jeu_Math_Addition) {
+            listeAdd = this.Jeu_Math.creerAdition(NOMBRE_D_ADDITION);
             Addition();
         }
     }
@@ -90,7 +103,7 @@ public class JeuMathActivity extends AppCompatActivity {
         // Générer via la classe JeuMathClass
 
         // Afficher la table de X
-        View_Choix__Nbr_Multiplication();
+        view_Choix__Nbr_Multiplication();
 
     }
 
@@ -104,7 +117,8 @@ public class JeuMathActivity extends AppCompatActivity {
 
 
     public void Addition() {
-        View_Addition(Jeu_Math.creerAdition(10));
+        for (int i =0; i<NOMBRE_D_ADDITION; i++)
+            View_Addition(i);
 
 
     }
@@ -123,42 +137,77 @@ public class JeuMathActivity extends AppCompatActivity {
     // ADDITION
 
 
-    public void View_Addition(ArrayList<Integer> liste_num) {
+    public void View_Addition(final int numAddDansListe) {
+        int nbr1 = this.listeAdd.get(2*numAddDansListe);
+        int nbr2 = this.listeAdd.get(2*numAddDansListe+1);
+        rep = 0; estRep = false;
+
+        if (reponsesAdd.get(numAddDansListe) != null) {
+            rep = reponsesAdd.get(numAddDansListe);
+        }
+
+
         MainLayout.removeAllViews();
 
 
         LinearLayout ln1 = new LinearLayout(this);
-        ln1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT,1f));
+        ln1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
         ln1.setGravity(Gravity.CENTER);
         ln1.setOrientation(LinearLayout.HORIZONTAL);
 
         TextView ln1_tw1 = new TextView(this);
         ln1_tw1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         ln1_tw1.setTextSize(50);
+        ln1_tw1.setText(nbr1 + " + " + nbr2 + " = ");
 
-        EditText ln1_et1 = new EditText(this);
-        ln1_tw1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        ln1_tw1.setTextSize(50);
+        final EditText ln1_et1 = new EditText(this);
+        ln1_et1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        ln1_et1.setTextSize(50);
+        ln1_et1.setText(rep);
+        ln1_et1.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         TextView tw1 = new TextView(this);
         tw1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         tw1.setGravity(Gravity.CENTER);
+        tw1.setText(numAddDansListe+1 + "/" + NOMBRE_D_ADDITION);
 
         LinearLayout ln2 = new LinearLayout(this);
         ln2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,0f));
+        ln2.setOrientation(LinearLayout.HORIZONTAL);
         ln2.setWeightSum(0);
 
         Button ln2_bt1 = new Button(this);
-        ln2_bt1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        ln2_bt1.setText("Corriger");
+        ln2_bt1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,0.5f));
+        ln2_bt1.setText("Précedent");
         ln2_bt1.setTextSize(25);
+        if (numAddDansListe == 0) {
+            ln2_bt1.setVisibility(View.INVISIBLE);
+            ln2_bt1.setClickable(false);
+        }
 
         Button ln2_bt2 = new Button(this);
-        ln2_bt2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        ln2_bt2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f));
         ln2_bt2.setText("Suivant");
         ln2_bt2.setTextSize(25);
+        if (numAddDansListe == NOMBRE_D_ADDITION-1) {
+            ln2_bt2.setText("Corriger");
+            // A AJOUTER LISTENER CORRIGER
+        } else {
+            // LISTENER SUIVANT
+            ln2_bt2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (ln1_et1.getText().toString() != "") {
+                        reponsesAdd.add(numAddDansListe, Integer.parseInt(ln1_et1.getText().toString()));
+                    } else {
+                        reponsesAdd.add(numAddDansListe,0);
 
+                    }
+                    estRep = true;
 
+                }
+            });
+        }
         ln1.addView(ln1_tw1);
         ln1.addView(ln1_et1);
 
@@ -168,6 +217,10 @@ public class JeuMathActivity extends AppCompatActivity {
         MainLayout.addView(ln1);
         MainLayout.addView(tw1);
         MainLayout.addView(ln2);
+
+        while (!estRep) {
+
+        }
 
 
 
@@ -183,7 +236,7 @@ public class JeuMathActivity extends AppCompatActivity {
     * Affiche le choix du numéro de la table de multiplication.
     *
      */
-    public void View_Choix__Nbr_Multiplication(){
+    public void view_Choix__Nbr_Multiplication(){
         MainLayout.removeAllViews();
         TextView tw = new TextView(this);
         tw.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -266,10 +319,16 @@ public class JeuMathActivity extends AppCompatActivity {
             params.gravity = Gravity.CENTER_HORIZONTAL;
 
             Button bt= new Button(this);
-            et.setLayoutParams(params);
-            et.setText("VALIDER");
+            bt.setLayoutParams(params);
+            bt.setText("VALIDER");
             // A AJOUTER :
             // Listener pour valider
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             
             ll.addView(tw);
