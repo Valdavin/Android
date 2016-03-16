@@ -2,7 +2,6 @@ package com.example.davinv.loustik;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -14,8 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 public class JeuMathActivity extends AppCompatActivity {
 
     // CONSTANTES
@@ -24,10 +21,7 @@ public class JeuMathActivity extends AppCompatActivity {
     public static final int NOMBRE_D_ADDITION = 10;
 
     //ADDITION
-    public ArrayList<Integer> listeAdd = new ArrayList<>(NOMBRE_D_ADDITION*2);
-    public ArrayList<Integer> reponsesAdd = new ArrayList<>(NOMBRE_D_ADDITION);
     public int rep = 0;
-    public boolean estRep = false;
     public int numeroPageCour = 0;
 
     // MULTIPLICATION
@@ -45,9 +39,7 @@ public class JeuMathActivity extends AppCompatActivity {
         setContentView(R.layout.activity_jeu_math);
         Jeu_Math = new JeuMathClass();
         MainLayout = (LinearLayout) findViewById(R.id.math_main_layout);
-        for (int i = 0; i < NOMBRE_D_ADDITION; i++) {
-            reponsesAdd.add(42);
-        }
+
 
     }
 
@@ -81,13 +73,11 @@ public class JeuMathActivity extends AppCompatActivity {
     }
 
     public void Jeu_Math_Choix(View view) {
-        System.out.printf("View id = " + view.getId());
-        System.out.printf("Mult id = " + R.id.Jeu_Math_Multiplication);
 
         if (view.getId() == R.id.Jeu_Math_Multiplication){
             Multiplication();
         } else if (view.getId() == R.id.Jeu_Math_Addition) {
-            listeAdd = this.Jeu_Math.creerAdition(NOMBRE_D_ADDITION);
+            Jeu_Math.creerAdition(NOMBRE_D_ADDITION);
             Addition();
         }
     }
@@ -121,8 +111,41 @@ public class JeuMathActivity extends AppCompatActivity {
 
 
     public void Addition() {
-            View_Addition(numeroPageCour);
+        viewAddition(numeroPageCour);
+    }
 
+    public void CorrigerAddition() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Résultat");
+
+        if (!Jeu_Math.estJuste()) {
+            int nbrerreur = Jeu_Math.nbrErreur();
+            builder.setMessage("Aoutch, tu as fait " + nbrerreur + " erreur(s)")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("Passer", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            recreate();
+                        }
+                    })
+                    .setNeutralButton("Voir", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            viewResultat();
+
+                        }
+                    });
+
+
+        } else {
+            builder.setMessage("Bravo ! Tu n'as pas fait d'erreur !")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("Content", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            recreate();
+                        }
+                    });
+
+        }
+        builder.show();
 
     }
 
@@ -140,14 +163,10 @@ public class JeuMathActivity extends AppCompatActivity {
     // ADDITION
 
 
-    public void View_Addition(final int numAddDansListe) {
-        int nbr1 = this.listeAdd.get(2*numAddDansListe);
-        int nbr2 = this.listeAdd.get(2*numAddDansListe+1);
-        estRep = false;
-
-        if (reponsesAdd.get(numAddDansListe) != null) {
-            rep = reponsesAdd.get(numAddDansListe);
-        }
+    public void viewAddition(final int numAddDansListe) {
+        int nbr1 = Jeu_Math.getAddAt(2*numAddDansListe);
+        int nbr2 = Jeu_Math.getAddAt(2 * numAddDansListe + 1);
+        rep = Jeu_Math.getAddReponse(numAddDansListe);
 
 
         MainLayout.removeAllViews();
@@ -166,7 +185,7 @@ public class JeuMathActivity extends AppCompatActivity {
         final EditText ln1_et1 = new EditText(this);
         ln1_et1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         ln1_et1.setTextSize(50);
-        ln1_et1.setText(Integer.toString(rep));
+        ln1_et1.setText(String.valueOf(rep));
         ln1_et1.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         TextView tw1 = new TextView(this);
@@ -190,7 +209,14 @@ public class JeuMathActivity extends AppCompatActivity {
         ln2_bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (ln1_et1.getText().toString() != "") {
+                    Jeu_Math.setAddReponse(numeroPageCour,Integer.parseInt(ln1_et1.getText().toString()));
 
+
+                } else {
+                    Jeu_Math.setAddReponse(numeroPageCour, 98);
+
+                }
                 numeroPageCour--;
                 Addition();
 
@@ -203,21 +229,25 @@ public class JeuMathActivity extends AppCompatActivity {
         ln2_bt2.setTextSize(20);
         if (numAddDansListe == NOMBRE_D_ADDITION-1) {
             ln2_bt2.setText("Corriger");
-            // A AJOUTER LISTENER "CORRIGER"
+            ln2_bt2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CorrigerAddition();
+                }
+            });
         } else {
             // LISTENER BOUTON "SUIVANT"
             ln2_bt2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (ln1_et1.getText().toString() != "") {
-                        reponsesAdd.add(numAddDansListe, Integer.parseInt(ln1_et1.getText().toString()));
+                        Jeu_Math.setAddReponse(numeroPageCour, Integer.parseInt(ln1_et1.getText().toString()));
 
 
                     } else {
-                        reponsesAdd.add(numAddDansListe,98);
+                        Jeu_Math.setAddReponse(numeroPageCour, 98);
 
                     }
-                    estRep = true;
                     numeroPageCour++;
                     Addition();
 
@@ -238,6 +268,58 @@ public class JeuMathActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    public void viewResultat() {
+        System.out.println("VIEW RESULTAT");
+        /*
+            <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 + 5 = "
+                android:textSize="25sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 7 "
+                android:textSize="25sp"
+                android:textColor="@color/réponseFausse"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="     10  "
+                android:textSize="25sp"
+                android:textColor="@color/réponseJuste"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="Finir"
+        android:layout_gravity="center"/>
+
+
+         */
+
+        
 
     }
 
@@ -274,7 +356,7 @@ public class JeuMathActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 numeroTabl = np.getValue();
-                afficher_multiplication();
+                afficherMultiplication();
             }
         });
 
@@ -286,11 +368,12 @@ public class JeuMathActivity extends AppCompatActivity {
 
     }
 
+
     /*
     * Affiche la table de multiplication
     *
      */
-    public void afficher_multiplication() {
+    public void afficherMultiplication() {
         MainLayout.removeAllViews();
         for (int i = 0; i<10; i++) {
             LinearLayout ll = new LinearLayout(MainLayout.getContext());
