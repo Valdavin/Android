@@ -24,10 +24,11 @@ public class JeuMathActivity extends AppCompatActivity {
     public static final int NOMBRE_D_ADDITION = 10;
 
     //ADDITION
-    public ArrayList<Integer> listeAdd = new ArrayList<>();
-    public ArrayList<Integer> reponsesAdd = new ArrayList<>();
+    public ArrayList<Integer> listeAdd = new ArrayList<>(NOMBRE_D_ADDITION*2);
+    public ArrayList<Integer> reponsesAdd = new ArrayList<>(NOMBRE_D_ADDITION);
     public int rep = 0;
     public boolean estRep = false;
+    public int numeroPageCour = 0;
 
     // MULTIPLICATION
     public static int numeroTabl = 42;
@@ -44,6 +45,9 @@ public class JeuMathActivity extends AppCompatActivity {
         setContentView(R.layout.activity_jeu_math);
         Jeu_Math = new JeuMathClass();
         MainLayout = (LinearLayout) findViewById(R.id.math_main_layout);
+        for (int i = 0; i < NOMBRE_D_ADDITION; i++) {
+            reponsesAdd.add(42);
+        }
 
     }
 
@@ -117,8 +121,7 @@ public class JeuMathActivity extends AppCompatActivity {
 
 
     public void Addition() {
-        for (int i =0; i<NOMBRE_D_ADDITION; i++)
-            View_Addition(i);
+            View_Addition(numeroPageCour);
 
 
     }
@@ -140,7 +143,7 @@ public class JeuMathActivity extends AppCompatActivity {
     public void View_Addition(final int numAddDansListe) {
         int nbr1 = this.listeAdd.get(2*numAddDansListe);
         int nbr2 = this.listeAdd.get(2*numAddDansListe+1);
-        rep = 0; estRep = false;
+        estRep = false;
 
         if (reponsesAdd.get(numAddDansListe) != null) {
             rep = reponsesAdd.get(numAddDansListe);
@@ -163,7 +166,7 @@ public class JeuMathActivity extends AppCompatActivity {
         final EditText ln1_et1 = new EditText(this);
         ln1_et1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         ln1_et1.setTextSize(50);
-        ln1_et1.setText(rep);
+        ln1_et1.setText(Integer.toString(rep));
         ln1_et1.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         TextView tw1 = new TextView(this);
@@ -179,31 +182,44 @@ public class JeuMathActivity extends AppCompatActivity {
         Button ln2_bt1 = new Button(this);
         ln2_bt1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,0.5f));
         ln2_bt1.setText("Précedent");
-        ln2_bt1.setTextSize(25);
+        ln2_bt1.setTextSize(20);
         if (numAddDansListe == 0) {
             ln2_bt1.setVisibility(View.INVISIBLE);
             ln2_bt1.setClickable(false);
         }
+        ln2_bt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                numeroPageCour--;
+                Addition();
+
+            }
+        });
 
         Button ln2_bt2 = new Button(this);
         ln2_bt2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f));
         ln2_bt2.setText("Suivant");
-        ln2_bt2.setTextSize(25);
+        ln2_bt2.setTextSize(20);
         if (numAddDansListe == NOMBRE_D_ADDITION-1) {
             ln2_bt2.setText("Corriger");
-            // A AJOUTER LISTENER CORRIGER
+            // A AJOUTER LISTENER "CORRIGER"
         } else {
-            // LISTENER SUIVANT
+            // LISTENER BOUTON "SUIVANT"
             ln2_bt2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (ln1_et1.getText().toString() != "") {
                         reponsesAdd.add(numAddDansListe, Integer.parseInt(ln1_et1.getText().toString()));
+
+
                     } else {
-                        reponsesAdd.add(numAddDansListe,0);
+                        reponsesAdd.add(numAddDansListe,98);
 
                     }
                     estRep = true;
+                    numeroPageCour++;
+                    Addition();
 
                 }
             });
@@ -218,9 +234,6 @@ public class JeuMathActivity extends AppCompatActivity {
         MainLayout.addView(tw1);
         MainLayout.addView(ln2);
 
-        while (!estRep) {
-
-        }
 
 
 
@@ -330,7 +343,7 @@ public class JeuMathActivity extends AppCompatActivity {
                 }
             });
 
-            
+
             ll.addView(tw);
             ll.addView(et);
 
