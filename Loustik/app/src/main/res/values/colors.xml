@@ -3,6 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="réponseJuste">#1de631</color>
-    <color name="réponseFausse">#ef3e4a</color>
+    <color name="reponseJuste">#1de631</color>
+    <color name="reponseFausse">#ef3e4a</color>
 </resources>

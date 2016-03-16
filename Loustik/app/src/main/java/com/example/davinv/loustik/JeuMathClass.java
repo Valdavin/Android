@@ -7,85 +7,94 @@ import java.util.Random;
  * Created by Valentin on 03/03/2016.
  */
 public class JeuMathClass {
-    private int nbr_d_adition;
-    private ArrayList<Integer> listeAdd = new ArrayList<>(nbr_d_adition*2);
-    private ArrayList<Integer> listeReponsesAdd = new ArrayList<>(nbr_d_adition);
+    private int tailleListeNum;
+    private ArrayList<Integer> listeNum = new ArrayList<>(tailleListeNum *2);
+    private ArrayList<Integer> listeReponsesAdd = new ArrayList<>(tailleListeNum);
 
     public JeuMathClass() {
 
 
     }
 
-
-
-    /*
-    * Créer une liste contenant nbr_d_adition entiers aléatoirs entre 0 et 10.
-    * Ainsi on a nbr_d_adition d'adition
-     */
-    public void creerAdition(int nbadd) {
-        nbr_d_adition = nbadd;
+    public void initialiserListeNum(int nbIter, int min, int max) {
+        tailleListeNum = nbIter;
         Random rand = new Random();
-        for (int i = 0; i < nbr_d_adition*2; i++) {
-            listeAdd.add(rand.nextInt(9)+1);
+        for (int i = 0; i < tailleListeNum *2; i++) {
+            listeNum.add(rand.nextInt(max-min) + min);
         }
-        for (int i = 0; i < nbr_d_adition; i++) {
+        for (int i = 0; i < tailleListeNum; i++) {
             listeReponsesAdd.add(0);
         }
     }
 
-    public void setAddReponse(int numRep, int rep) {
+    public void setReponseAt(int numRep, int rep) {
         listeReponsesAdd.set(numRep, rep);
     }
 
-    public int getAddReponse(int numRep) {
+    public int getReponseAt(int numRep) {
         return listeReponsesAdd.get(numRep);
     }
 
-    public int getAddAt(int i) {
-        return listeAdd.get(i);
+    public int getNumAt(int i) {
+        return listeNum.get(i);
     }
 
-    public boolean estJuste() {
+    public boolean estJuste(String operateur) {
         boolean toutBon = true;
-        for (int i = 0; i<nbr_d_adition; i++) {
-            System.out.print(listeReponsesAdd.get(i) + " ");
-        }
-        System.out.println();
-        for (int i = 0; i<nbr_d_adition; i++) {
-            System.out.print(listeAdd.get(i*2) + " " + listeAdd.get(i*2+1) + "     ");
-        }
-        System.out.println();
+        for (int i =0; i< tailleListeNum; i++) {
 
-        for (int i =0; i<nbr_d_adition; i++) {
-            System.out.print(listeAdd.get(i*2) + " + " + listeAdd.get(i*2+1));
-            if(listeAdd.get(i*2)+listeAdd.get(i*2+1) != listeReponsesAdd.get(i)){
-                System.out.println(" != " + listeReponsesAdd.get(i));
+            if(estJusteAt(i,operateur)){
                 toutBon = false;
-            } else {
-                System.out.println(" = " + listeReponsesAdd.get(i));
             }
 
         }
         return toutBon;
     }
 
-    public boolean estJusteAt(int i) {
-        return listeAdd.get(i*2)+listeAdd.get(i*2+1) == listeReponsesAdd.get(i);
+    public boolean estJusteAt(int i, String operateur) {
+        switch (operateur) {
+            case "+":
+                return listeNum.get(i*2)+listeNum.get(i*2+1) == listeReponsesAdd.get(i);
+            case "-":
+                return listeNum.get(i*2)-listeNum.get(i*2+1) == listeReponsesAdd.get(i);
+            case "÷":
+                return listeNum.get(i*2)/listeNum.get(i*2+1) == listeReponsesAdd.get(i);
+            case "x":
+                return listeNum.get(i*2)*listeNum.get(i*2+1) == listeReponsesAdd.get(i);
+            default:
+                return false;
+        }
+
     }
 
-    public int nbrErreur(){
+    public int nbrErreur(String operateur){
         int erreur = 0;
 
 
-        for (int i =0; i<nbr_d_adition; i++) {
+        for (int i =0; i< tailleListeNum; i++) {
 
-            if(listeAdd.get(i*2)+listeAdd.get(i*2+1) != listeReponsesAdd.get(i)){
+            if(!estJusteAt(i,operateur)){
                erreur++;
 
             }
 
         }
         return erreur;
+    }
+
+    public int getBonneReponse(int i, String operateur) {
+        switch (operateur) {
+            case "+":
+                return listeNum.get(i*2)+listeNum.get(i*2+1);
+            case "-":
+                return listeNum.get(i*2)-listeNum.get(i*2+1);
+            case "÷":
+                return listeNum.get(i*2)/listeNum.get(i*2+1);
+            case "x":
+                return listeNum.get(i*2)*listeNum.get(i*2+1);
+            default:
+                return 42;
+        }
     }
 
 

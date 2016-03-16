@@ -18,19 +18,35 @@
         android:id="@+id/math_main_layout"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/Jeu_Math_Multiplication"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Multiplication"
-            android:onClick="Jeu_Math_Choix"/>
+
 
         <Button
             android:id="@+id/Jeu_Math_Addition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Addition"
-            android:onClick="Jeu_Math_Choix"/>
+            android:onClick="jeuMathChoix"/>
+
+        <Button
+            android:id="@+id/Jeu_Math_Soustraction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Soustraction"
+            android:onClick="jeuMathChoix"/>
+
+        <Button
+            android:id="@+id/Jeu_Math_Multiplication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Multiplication"
+            android:onClick="jeuMathChoix"/>
+
+        <Button
+            android:id="@+id/Jeu_Math_Division"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Division"
+            android:onClick="jeuMathChoix"/>
     </LinearLayout>
 
     
