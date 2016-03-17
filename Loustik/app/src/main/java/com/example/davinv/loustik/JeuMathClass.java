@@ -16,6 +16,25 @@ public class JeuMathClass {
 
     }
 
+    public void initialiserListeNumDivision (int nbIter, int min, int max) {
+        tailleListeNum = nbIter;
+        Random rand = new Random();
+        for (int i = 0; i < tailleListeNum; i++) {
+            listeReponsesAdd.add(0);
+        }
+
+        for (int i = 0; i < tailleListeNum *2; i++) {
+            listeNum.add(rand.nextInt(max-min) + min);
+        }
+        for (int i = 0; i < tailleListeNum; i++) {
+            int nb1Temp = listeNum.get(2*i);
+            int nb2Temp = listeNum.get(2*i+1);
+            listeNum.set(2 * i, nb1Temp * nb2Temp);
+
+        }
+
+    }
+
     public void initialiserListeNum(int nbIter, int min, int max) {
         tailleListeNum = nbIter;
         Random rand = new Random();
@@ -41,13 +60,29 @@ public class JeuMathClass {
 
     public boolean estJuste(String operateur) {
         boolean toutBon = true;
-        for (int i =0; i< tailleListeNum; i++) {
+        for (int i = 0; i<tailleListeNum*2; i=i+2) {
+            System.out.print(listeNum.get(i) + " " + operateur +  " " + listeNum.get(i+1));
+        }
+        System.out.println();
 
-            if(estJusteAt(i,operateur)){
+        for (int i = 0; i<tailleListeNum; i=i+1) {
+            System.out.print(listeReponsesAdd.get(i)+" ");
+        }
+        System.out.println();
+
+        for (int i =0; i< tailleListeNum; i++) {
+            System.out.print(listeNum.get(2*i) + " " +  + listeNum.get(2*i+1) + operateur);
+            if(!estJusteAt(i,operateur)){
+                System.out.print(" != ");
                 toutBon = false;
+            } else {
+                System.out.print(" = ");
             }
+            System.out.println(listeReponsesAdd.get(i));
 
         }
+
+
         return toutBon;
     }
 

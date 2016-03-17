@@ -76,7 +76,7 @@ public class JeuMathActivity extends AppCompatActivity {
 
             case R.id.Jeu_Math_Division:
                 choixOperateur = OPERATEUR_DIVISION;
-                Jeu_Math.initialiserListeNum(NOMBRE_OPERATIONS,1,10); // A CHANGER
+                Jeu_Math.initialiserListeNumDivision(NOMBRE_OPERATIONS,2,10);
                 updateView();
                 break;
 
