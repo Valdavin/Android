@@ -1,4 +1,4 @@
-package com.example.davinv.loustik;
+package com.example.davinv.loustik.Math;
 
 import java.util.ArrayList;
 import java.util.Random;

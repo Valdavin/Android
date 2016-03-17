@@ -19,10 +19,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".JeuMathActivity"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
+            android:name=".Math.JeuMathActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".Culture.JeuCultureActivity"></activity>
     </application>
 
 </manifest>

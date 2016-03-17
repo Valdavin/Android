@@ -1,4 +1,4 @@
-package com.example.davinv.loustik;
+package com.example.davinv.loustik.Math;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+
+import com.example.davinv.loustik.R;
 
 public class JeuMathActivity extends AppCompatActivity {
 
