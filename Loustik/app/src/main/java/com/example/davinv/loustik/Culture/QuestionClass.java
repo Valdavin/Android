@@ -1,5 +1,7 @@
 package com.example.davinv.loustik.Culture;
 
+import android.widget.Button;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,5 +46,8 @@ public class QuestionClass {
 
     public boolean isBonneRep(String rep) {
         return reponseVrai.equals(rep);
+    }
+    public boolean isBonneRep(Button boutton) {
+        return isBonneRep(boutton.getText().toString());
     }
 }

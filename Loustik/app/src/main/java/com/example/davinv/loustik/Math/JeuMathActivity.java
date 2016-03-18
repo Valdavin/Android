@@ -234,6 +234,7 @@ public class JeuMathActivity extends AppCompatActivity {
             ln2_bt2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Faudrait rajouter un truc pour éviter de mettre un nombre trop grand.
                     if (!ln1_et1.getText().toString().equals("")) {
                         Jeu_Math.setReponseAt(numeroPageCour, Integer.parseInt(ln1_et1.getText().toString()));
 
