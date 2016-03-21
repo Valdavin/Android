@@ -3,9 +3,12 @@ package com.example.davinv.loustik.Math;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.method.DigitsKeyListener;
+import android.text.method.KeyListener;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -160,7 +163,7 @@ public class JeuMathActivity extends AppCompatActivity {
         TextView ln1_tw1 = new TextView(this);
         ln1_tw1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         ln1_tw1.setTextSize(50);
-        ln1_tw1.setText(nbr1 +" "+ choixOperateur + " " + nbr2 + " = ");
+        ln1_tw1.setText(nbr1 + " " + choixOperateur + " " + nbr2 + " = ");
 
         final EditText ln1_et1 = new EditText(this);
         ln1_et1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -172,6 +175,8 @@ public class JeuMathActivity extends AppCompatActivity {
         }
 
         ln1_et1.setInputType(InputType.TYPE_CLASS_NUMBER);
+        ln1_et1.setRawInputType(Configuration.KEYBOARD_12KEY);
+
         ln1_et1.requestFocus();
 
 
@@ -420,7 +425,7 @@ public class JeuMathActivity extends AppCompatActivity {
 
             EditText et = new EditText(MainLayout.getContext());
             et.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            et.setInputType(InputType.TYPE_CLASS_NUMBER);
+            et.setInputType(InputType.TYPE_CLASS_TEXT);
             et.setText("0");
             View.OnFocusChangeListener l = new View.OnFocusChangeListener() {
                 @Override

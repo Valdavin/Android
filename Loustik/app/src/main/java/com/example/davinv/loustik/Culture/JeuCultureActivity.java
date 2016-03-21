@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,14 +18,16 @@ public class JeuCultureActivity extends AppCompatActivity {
     // ConstanteS
     private static final String TEST = "test";
     private static final int TPS_ATTENTE = 2000; //temps atendu entre 2 qestion
+    static final String STATE_QUESTION = "question";
 
 
 
-    private ArrayList<QuestionClass> listeQuestions;
+    private ArrayList<Question> listeQuestions;
     private String choixDomaine;
     private int questionCour = 0;
     private int score = 0;
 
+    private Question question;
     private LinearLayout MainLayout;
 
     @Override
@@ -36,16 +37,26 @@ public class JeuCultureActivity extends AppCompatActivity {
 
         MainLayout = (LinearLayout) findViewById(R.id.math_main_layout);
         listeQuestions = new ArrayList<>();
+
+        // Check whether we're recreating a previously destroyed instance
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            questionCour = (int) savedInstanceState.getSerializable(STATE_QUESTION);
+
+        } else {
+            // Probably initialize members with default values for a new instance
+
+        }
         initialiserQuestion();
 
     }
 
     private void initialiserQuestion() {
-        listeQuestions.add(new QuestionClass());
-        listeQuestions.add(new QuestionClass());
-        listeQuestions.add(new QuestionClass());
-        listeQuestions.add(new QuestionClass());
-        listeQuestions.add(new QuestionClass());
+        listeQuestions.add(new Question());
+        listeQuestions.add(new Question());
+        listeQuestions.add(new Question());
+        listeQuestions.add(new Question());
+        listeQuestions.add(new Question());
 
     }
 
@@ -73,7 +84,7 @@ public class JeuCultureActivity extends AppCompatActivity {
         if (questionCour < listeQuestions.size()) {
 
             ArrayList<String> listeRep = listeQuestions.get(questionCour).getReponses();
-            String question = listeQuestions.get(questionCour).getEnonce();
+            String question = listeQuestions.get(questionCour).getQuestion();
 
             LinearLayout ll = (LinearLayout) MainLayout.getChildAt(0);
             TextView et = (TextView) ll.getChildAt(0);
@@ -101,6 +112,16 @@ public class JeuCultureActivity extends AppCompatActivity {
             //Jeu Finis
             super.finish();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        // Save the user's current game state
+        outState.putSerializable(STATE_QUESTION, questionCour);
+
+        //
+        super.onSaveInstanceState(outState);
     }
 
 
@@ -187,7 +208,7 @@ public class JeuCultureActivity extends AppCompatActivity {
     }
 
     private void afficherReponses(){
-        QuestionClass q = listeQuestions.get(questionCour);
+        Question q = listeQuestions.get(questionCour);
         LinearLayout ll = (LinearLayout) MainLayout.getChildAt(0);
         Button bt1 = (Button) ll.getChildAt(1);
         Button bt2 = (Button) ll.getChildAt(2);
