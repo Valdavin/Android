@@ -12,12 +12,22 @@ import android.widget.TextView;
 import com.example.davinv.loustik.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class JeuCultureActivity extends AppCompatActivity {
 
-    // ConstanteS
+    // Constante
     private static final String TEST = "test";
+
+    // Thèmes
+    public static final String THEME_TOUS = "TOUS";
+    public static final String THEME_HISOIRE = "HISTOIRE";
+    public static final String THEME_GEOGRAPHIE = "GEOGRAPHIE";
+    public static final String THEME_GENERALE = "GENERALE";
+    public static final String THEME_SCIENCE = "SCIENCE";
+
     private static final int TPS_ATTENTE = 2000; //temps atendu entre 2 qestion
+
     static final String STATE_QUESTION = "question";
 
 
@@ -49,22 +59,42 @@ public class JeuCultureActivity extends AppCompatActivity {
             // Probably initialize members with default values for a new instance
 
         }
-        initialiserQuestion();
+
 
     }
 
     private void initialiserQuestion() {
-        listeQuestions = QuestionDAO.selectAll();
+        if (choixDomaine != THEME_TOUS) {
+            listeQuestions = QuestionDAO.getQuestionParTheme(choixDomaine);
+        } else {
+            listeQuestions = QuestionDAO.selectAll();
+        }
+        Collections.shuffle(listeQuestions);
+
 
     }
 
 
     public void jeuMathChoix(View view) {
         switch (view.getId()) {
-            case R.id.Jeu_Culture_Test:
-                choixDomaine = TEST;
+            case R.id.Jeu_Culture_Tout:
+                choixDomaine = THEME_TOUS;
+                break;
+            case R.id.Jeu_Culture_Generale:
+                choixDomaine = THEME_GENERALE;
+                break;
+            case R.id.Jeu_Culture_Geographie:
+                choixDomaine = THEME_GEOGRAPHIE;
+                break;
+            case R.id.Jeu_Culture_Histoire:
+                choixDomaine = THEME_HISOIRE;
+                break;
+            case R.id.Jeu_Culture_Science:
+                choixDomaine = THEME_SCIENCE;
+                break;
         }
 
+        initialiserQuestion();
         setViewQuestion();
         updateContent();
     }
@@ -122,8 +152,14 @@ public class JeuCultureActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    public void retour(View view) {
+        super.finish();
+    }
 
-
+    // A IMPLEMENTER
+    public void proposer_question(View view) {
+        //
+    }
     //////////////////
     // VIEW
 
@@ -188,7 +224,13 @@ public class JeuCultureActivity extends AppCompatActivity {
 
         Button bt_suite = new Button(this);
         bt_suite.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        bt_suite.setText("Suite");
+        bt_suite.setText("Retour");
+        bt_suite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.activity_jeu_culture);
+            }
+        });
         bt_suite.setGravity(Gravity.CENTER);
 
 
@@ -230,4 +272,7 @@ public class JeuCultureActivity extends AppCompatActivity {
             bt3.setBackgroundColor(getResources().getColor(R.color.reponseFausse));
         }
     }
+
+
+
 }

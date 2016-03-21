@@ -72,19 +72,75 @@
 
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/Jeu_Culture_Tout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tout"
+                android:onClick="jeuMathChoix"/>
 
+            <Button
+                android:id="@+id/Jeu_Culture_Histoire"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="HISOIRE"
+                android:onClick="jeuMathChoix"/>
+            <Button
+                android:id="@+id/Jeu_Culture_Geographie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GEOGRAPHIE"
+                android:onClick="jeuMathChoix"/>
+            <Button
+                android:id="@+id/Jeu_Culture_Science"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SCIENCE"
+                android:onClick="jeuMathChoix"/>
+            <Button
+                android:id="@+id/Jeu_Culture_Generale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GENERALE"
+                android:onClick="jeuMathChoix"/>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/Jeu_Culture_Test"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test"
-            android:onClick="jeuMathChoix"/>
+            android:layout_weight="0">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retour "
+                android:onClick="retour"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Proposer une Question "
+                android:onClick="proposer_question"/>
+
+        </LinearLayout>
+
+
+
+
 
 
 
     </LinearLayout>
 
-
+    <!--
+     public static final String THEME_HISOIRE = "HISOIRE";
+    public static final String THEME_GEOGRAPHIE = "GEOGRAPHIE";
+    public static final String THEME_GENERALE = "GENERALE";
+    public static final String THEME_SCIENCE = "SCIENCE";
+    -->
 
 </LinearLayout>

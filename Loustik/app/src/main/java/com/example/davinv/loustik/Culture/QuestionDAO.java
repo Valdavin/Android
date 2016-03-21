@@ -21,6 +21,7 @@ public class QuestionDAO extends DAOBase {
     public static final String COL_BONNE_REPONSE = "bonne_reponse";
     public static final String COL_MAUVAISE_REPONSE_1 = "mauvaise_reponse_1";
     public static final String COL_MAUVAISE_REPONSE_2 = "mauvaise_reponse_2";
+    public static final String COL_THEME = "theme";
 
     // retourne une chaîne de caractères représentant une instruction SQL de création de la table Question
     public static final String CREATE_TABLE =
@@ -29,7 +30,8 @@ public class QuestionDAO extends DAOBase {
                     COL_QUESTION + " TEXT NOT NULL, " +
                     COL_BONNE_REPONSE + " TEXT NOT NULL, " +
                     COL_MAUVAISE_REPONSE_1 + " TEXT NOT NULL, " +
-                    COL_MAUVAISE_REPONSE_2 + " TEXT NOT NULL);";
+                    COL_MAUVAISE_REPONSE_2 + " TEXT NOT NULL, " +
+                    COL_THEME + " TEXT NOT NULL);";
 
     // retourne une chaîne de caractères représentant une instruction SQL de création de la table Question
     public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_QUESTION_REPONSE + ";";
@@ -37,19 +39,19 @@ public class QuestionDAO extends DAOBase {
 
     // Données pour la table
     private static final String[] DATA = new String[] {
-            "'Quel est la couleur du cheval blanc d\'Henri IV ?', 'Blanc', 'Rouge', 'Jaune Fluo'",
-            "'Pourquoi il n'y a aucun arabe dans StarWars ?', 'Car c'est le futur', 'Pour éviter les vols', 'Pour des raisons de budget'",
-            "'Qui a volé l'orange ?', 'Mehdi', 'Jacque', 'François'",
-            "'Question 1', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
-            "'Question 2', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
-            "'Question 3', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
-            "'Question 4', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
-            "'Question 5', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
-            "'Question 6', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
-            "'Question 7', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
-            "'Question 8', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
-            "'Question 9', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
-            "'Question 10', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'"};
+            "'Quel est la couleur du cheval blanc d''Henri 4 ?', 'Blanc', 'Rouge', 'Jaune Fluo' , '"+JeuCultureActivity.THEME_GENERALE+"'",
+            "'Pourquoi il n''y a aucun arabe dans StarWars ?', 'Car c''est le futur', 'Pour éviter les vols', 'Pour des raisons de budget', '" +JeuCultureActivity.THEME_GENERALE+ "'",
+            "'Qui a volé l''orange ?', 'Mehdi', 'Jacque', 'François', '" +JeuCultureActivity.THEME_GENERALE+ "'",
+            "'Dans la série \"Game of Thrones\", quels animaux accompagne Daenerys Targaryen ?', 'Des Dragons', 'Des loups', 'Des canards', '" +JeuCultureActivity.THEME_GENERALE+ "'",
+            "'La France est dans la zone..?', 'Tempérée', 'Polaire', 'Tropicale', '" +JeuCultureActivity.THEME_GEOGRAPHIE+ "'",
+            "'Qui découvrit les Indes en 1498 ?', 'Vasco de Gama', 'Magellan', 'Christophe Colomb', '" +JeuCultureActivity.THEME_HISOIRE+ "'",
+            "'Combien de verres de 20 cl peut-on remplir avec 1 litre d''eau ?', '5', '4', '6', '" +JeuCultureActivity.THEME_GENERALE+ "'",
+            "'Quel océan entoure l''île de Madagascar ?', 'Océan Indien', 'Océan Atlantique', 'Océan Pacifique', '" +JeuCultureActivity.THEME_GEOGRAPHIE+ "'",
+            "'Lequel de ces pays n''appartient pas à l''Union européenne ?', 'Suisse', 'Portugal', 'Grèce', '" +JeuCultureActivity.THEME_GEOGRAPHIE+ "'",
+            "'Quel composant de l''air l''être humain absorbe-t-il pour respirer ?', 'L''oxygène', 'L''azote', 'Le gaz carbonique', '" +JeuCultureActivity.THEME_SCIENCE+ "'",
+            "'Comment s''appelle le chien maladroit qui est chargé de surveiller les Daltons ?', 'Rantanplan', 'Ranplantan', 'Annie C.', '" +JeuCultureActivity.THEME_GENERALE+ "'",
+            "'Quel Roi de France a construit Versaille ?', 'Louis XIV (14) ', 'Louis XVI (16)', 'Napoléon', '" +JeuCultureActivity.THEME_HISOIRE+ "'",
+            "'Quel est la capitale de l''Italie ?', 'Rome', 'Venise', 'Grenoble', '" +JeuCultureActivity.THEME_GEOGRAPHIE+ "'",};
 
     // retourne une liste de chaînes de caractères représentant les instructions SQL d'insertion de données dans la table
     public static String[] getInsertSQL() {
@@ -57,7 +59,8 @@ public class QuestionDAO extends DAOBase {
                 + COL_QUESTION + ", "
                 + COL_BONNE_REPONSE + ", "
                 + COL_MAUVAISE_REPONSE_1 + ", "
-                + COL_MAUVAISE_REPONSE_2 + ") VALUES ";
+                + COL_MAUVAISE_REPONSE_2 + ", "
+                + COL_THEME + ") VALUES ";
 
         //
         String[] liste = new String[DATA.length];
@@ -211,5 +214,12 @@ public class QuestionDAO extends DAOBase {
 
         //
         return question;
+    }
+
+    public ArrayList<Question> getQuestionParTheme(String Theme) {
+        //Récupère dans un Cursor les valeur correspondant à des enregistrements de question contenu dans la BD
+        Cursor cursor = getDB().rawQuery("SELECT * FROM " + TABLE_QUESTION_REPONSE + " WHERE " + COL_THEME + " = '"+Theme+"'", null);
+
+        return cursorToListQuestion(cursor);
     }
 }
