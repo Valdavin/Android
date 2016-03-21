@@ -37,19 +37,19 @@ public class QuestionDAO extends DAOBase {
 
     // Données pour la table
     private static final String[] DATA = new String[] {
-            "'Quel est la couleur du cheval blanc d'Henri IV ?', 'Blanc', 'Rouge', 'Jaune Fluo'",
-            "'Pourquoi il n'y a aucun arabe dans StarWars ?', 'C'est le futur', 'Pour éviter les vols', 'mauvaise réponse 2'",
-            "'Une troisième question ?', 'bonne réponse', 'mauvaise réponse 1', 'mauvaise réponse 2'",
-            "'', '', '', ''",
-            "'', '', '', ''",
-            "'', '', '', ''",
-            "'', '', '', ''",
-            "'', '', '', ''",
-            "'', '', '', ''",
-            "'', '', '', ''",
-            "'', '', '', ''",
-            "'', '', '', ''",
-            "'', '', '', ''"};
+            "'Quel est la couleur du cheval blanc d\'Henri IV ?', 'Blanc', 'Rouge', 'Jaune Fluo'",
+            "'Pourquoi il n'y a aucun arabe dans StarWars ?', 'Car c'est le futur', 'Pour éviter les vols', 'Pour des raisons de budget'",
+            "'Qui a volé l'orange ?', 'Mehdi', 'Jacque', 'François'",
+            "'Question 1', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
+            "'Question 2', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
+            "'Question 3', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
+            "'Question 4', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
+            "'Question 5', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
+            "'Question 6', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
+            "'Question 7', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
+            "'Question 8', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
+            "'Question 9', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'",
+            "'Question 10', 'Réponse Vrai', 'Réponse Fausse1', 'Réponse Fausse2'"};
 
     // retourne une liste de chaînes de caractères représentant les instructions SQL d'insertion de données dans la table
     public static String[] getInsertSQL() {
@@ -75,6 +75,7 @@ public class QuestionDAO extends DAOBase {
 
     public QuestionDAO(Context context) {
         super(context);
+
     }
 
     public long insert(Question question) {
@@ -118,7 +119,7 @@ public class QuestionDAO extends DAOBase {
         return removeByID(question.getId());
     }
 
-    public List<Question> selectAll() {
+    public ArrayList<Question> selectAll() {
 
         //Récupère dans un Cursor les valeur correspondant à des enregistrements de question contenu dans la BD
         Cursor cursor = getDB().rawQuery("SELECT * FROM " + TABLE_QUESTION_REPONSE, null);
@@ -143,7 +144,7 @@ public class QuestionDAO extends DAOBase {
     }
 
     //Cette méthode permet de convertir un cursor en une liste de questions
-    private List<Question> cursorToListQuestion(Cursor cursor) {
+    private ArrayList<Question> cursorToListQuestion(Cursor cursor) {
 
         // Récupére l'index des champs
         int indexId = cursor.getColumnIndex(COL_ID);

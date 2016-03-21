@@ -29,6 +29,7 @@ public class JeuCultureActivity extends AppCompatActivity {
 
     private Question question;
     private LinearLayout MainLayout;
+    private QuestionDAO QuestionDAO = new QuestionDAO(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class JeuCultureActivity extends AppCompatActivity {
 
         MainLayout = (LinearLayout) findViewById(R.id.math_main_layout);
         listeQuestions = new ArrayList<>();
+        QuestionDAO.open();
 
         // Check whether we're recreating a previously destroyed instance
         if (savedInstanceState != null) {
@@ -52,11 +54,7 @@ public class JeuCultureActivity extends AppCompatActivity {
     }
 
     private void initialiserQuestion() {
-        listeQuestions.add(new Question());
-        listeQuestions.add(new Question());
-        listeQuestions.add(new Question());
-        listeQuestions.add(new Question());
-        listeQuestions.add(new Question());
+        listeQuestions = QuestionDAO.selectAll();
 
     }
 
