@@ -18,6 +18,17 @@ public class Question implements Serializable {
     private String reponseVrai;
     private String reponseFausse1;
     private String reponseFausse2;
+    private String theme;
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+
 
     public int getId() {
         return id;

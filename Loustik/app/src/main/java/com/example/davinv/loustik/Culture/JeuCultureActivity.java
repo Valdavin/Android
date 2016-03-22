@@ -5,12 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.davinv.loustik.R;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -25,6 +30,7 @@ public class JeuCultureActivity extends AppCompatActivity {
     public static final String THEME_GEOGRAPHIE = "GEOGRAPHIE";
     public static final String THEME_GENERALE = "GENERALE";
     public static final String THEME_SCIENCE = "SCIENCE";
+    private static final String[] THEME_ARRAY = { THEME_TOUS, THEME_HISOIRE, THEME_GEOGRAPHIE, THEME_GENERALE, THEME_SCIENCE};
 
     private static final int TPS_ATTENTE = 2000; //temps atendu entre 2 qestion
 
@@ -156,10 +162,29 @@ public class JeuCultureActivity extends AppCompatActivity {
         super.finish();
     }
 
-    // A IMPLEMENTER
-    public void proposer_question(View view) {
-        //
+
+    public void proposerQuestion(View view) {
+        setViewProposerQuestion();
     }
+
+    public void validerPropQuestion(View view) {
+        Spinner themeSpinerView = (Spinner) findViewById(R.id.spinner_theme);
+        String intitule = ((EditText) findViewById(R.id.et_propQ_intitule)).getText().toString();
+        String bRep = ((EditText) findViewById(R.id.et_propQ_bRep)).getText().toString();
+        String mRep1 = ((EditText) findViewById(R.id.et_propQ_mRep1)).getText().toString();
+        String mRep2 = ((EditText) findViewById(R.id.et_propQ_mRep2)).getText().toString();
+
+        System.out.println(themeSpinerView.getSelectedItem() + " " + intitule);
+        if (!intitule.equals("") && !bRep.equals("") && !mRep1.equals("") && !mRep2.equals("")) {
+            Question q = new Question()
+            QuestionDAO.insert()
+        }
+
+
+    }
+
+
+
     //////////////////
     // VIEW
 
@@ -195,7 +220,7 @@ public class JeuCultureActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 verifReponse(v);
-                afficherReponses();
+                setViewAfficherReponses();
 
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -247,7 +272,7 @@ public class JeuCultureActivity extends AppCompatActivity {
         
     }
 
-    private void afficherReponses(){
+    private void setViewAfficherReponses(){
         Question q = listeQuestions.get(questionCour);
         LinearLayout ll = (LinearLayout) MainLayout.getChildAt(0);
         Button bt1 = (Button) ll.getChildAt(1);
@@ -271,6 +296,17 @@ public class JeuCultureActivity extends AppCompatActivity {
         } else {
             bt3.setBackgroundColor(getResources().getColor(R.color.reponseFausse));
         }
+    }
+
+    private void setViewProposerQuestion() {
+        System.out.println("setViewProposerQuestion");
+        MainLayout.removeAllViews();
+        setContentView(R.layout.proposerquestion);
+
+        Spinner themeSpinerView = (Spinner) findViewById(R.id.spinner_theme);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, THEME_ARRAY);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        themeSpinerView.setAdapter(arrayAdapter);
     }
 
 
