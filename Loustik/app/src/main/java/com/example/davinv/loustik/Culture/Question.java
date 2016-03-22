@@ -84,6 +84,14 @@ public class Question implements Serializable {
         reponseFausse2 = repF2;
     }
 
+    public Question(String question, String repV, String repF1, String repF2, String th) {
+        this.question = question;
+        reponseVrai = repV;
+        reponseFausse1 = repF1;
+        reponseFausse2 = repF2;
+        theme = th;
+    }
+
     public ArrayList<String> getReponses() {
         ArrayList<String> listeRep = new ArrayList<String>(3);
         listeRep.add(reponseVrai);

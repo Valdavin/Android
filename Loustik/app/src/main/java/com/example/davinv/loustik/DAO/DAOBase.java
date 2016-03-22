@@ -1,4 +1,4 @@
-package com.example.davinv.loustik.Culture;
+package com.example.davinv.loustik.DAO;
 
 import android.content.Context;
 import android.database.SQLException;

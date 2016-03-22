@@ -168,6 +168,13 @@ public class JeuCultureActivity extends AppCompatActivity {
     }
 
     public void validerPropQuestion(View view) {
+        // On remet les bouton a jour si on s'est trompé avant
+        findViewById(R.id.et_propQ_intitule).setBackgroundResource(android.R.drawable.edit_text);
+        findViewById(R.id.et_propQ_bRep).setBackgroundResource(android.R.drawable.edit_text);
+        findViewById(R.id.et_propQ_mRep1).setBackgroundResource(android.R.drawable.edit_text);
+        findViewById(R.id.et_propQ_mRep2).setBackgroundResource(android.R.drawable.edit_text);
+
+
         Spinner themeSpinerView = (Spinner) findViewById(R.id.spinner_theme);
         String intitule = ((EditText) findViewById(R.id.et_propQ_intitule)).getText().toString();
         String bRep = ((EditText) findViewById(R.id.et_propQ_bRep)).getText().toString();
@@ -176,8 +183,26 @@ public class JeuCultureActivity extends AppCompatActivity {
 
         System.out.println(themeSpinerView.getSelectedItem() + " " + intitule);
         if (!intitule.equals("") && !bRep.equals("") && !mRep1.equals("") && !mRep2.equals("")) {
-            Question q = new Question()
-            QuestionDAO.insert()
+
+            Question q = new Question(intitule,bRep,mRep1,mRep2,(String) themeSpinerView.getSelectedItem());
+            QuestionDAO.insert(q);
+            System.out.printf("Insertion réeussi");
+            this.recreate();
+
+        } else {
+            // On met en valeur les case où il manque des informations.
+            if (intitule.equals("")) {
+                findViewById(R.id.et_propQ_intitule).setBackgroundResource(R.drawable.editextcustom);
+            }
+            if (bRep.equals("")) {
+                findViewById(R.id.et_propQ_bRep).setBackgroundResource(R.drawable.editextcustom);
+            }
+            if (mRep1.equals("")) {
+                findViewById(R.id.et_propQ_mRep1).setBackgroundResource(R.drawable.editextcustom);
+            }
+            if (mRep2.equals("")) {
+                findViewById(R.id.et_propQ_mRep2).setBackgroundResource(R.drawable.editextcustom);
+            }
         }
 
 
@@ -253,7 +278,7 @@ public class JeuCultureActivity extends AppCompatActivity {
         bt_suite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.activity_jeu_culture);
+                recreate();
             }
         });
         bt_suite.setGravity(Gravity.CENTER);

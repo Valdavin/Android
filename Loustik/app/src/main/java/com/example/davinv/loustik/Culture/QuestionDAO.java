@@ -4,8 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.example.davinv.loustik.DAO.DAOBase;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Valentin on 21/03/2016.
@@ -40,8 +41,6 @@ public class QuestionDAO extends DAOBase {
     // Données pour la table
     private static final String[] DATA = new String[] {
             "'Quel est la couleur du cheval blanc d''Henri 4 ?', 'Blanc', 'Rouge', 'Jaune Fluo' , '"+JeuCultureActivity.THEME_GENERALE+"'",
-            "'Pourquoi il n''y a aucun arabe dans StarWars ?', 'Car c''est le futur', 'Pour éviter les vols', 'Pour des raisons de budget', '" +JeuCultureActivity.THEME_GENERALE+ "'",
-            "'Qui a volé l''orange ?', 'Mehdi', 'Jacque', 'François', '" +JeuCultureActivity.THEME_GENERALE+ "'",
             "'Dans la série \"Game of Thrones\", quels animaux accompagne Daenerys Targaryen ?', 'Des Dragons', 'Des loups', 'Des canards', '" +JeuCultureActivity.THEME_GENERALE+ "'",
             "'La France est dans la zone..?', 'Tempérée', 'Polaire', 'Tropicale', '" +JeuCultureActivity.THEME_GEOGRAPHIE+ "'",
             "'Qui découvrit les Indes en 1498 ?', 'Vasco de Gama', 'Magellan', 'Christophe Colomb', '" +JeuCultureActivity.THEME_HISOIRE+ "'",
@@ -91,6 +90,7 @@ public class QuestionDAO extends DAOBase {
         values.put(COL_BONNE_REPONSE, question.getReponseVrai());
         values.put(COL_MAUVAISE_REPONSE_1, question.getReponseFausse1());
         values.put(COL_MAUVAISE_REPONSE_2, question.getReponseFausse2());
+        values.put(COL_THEME, question.getTheme());
 
         // Insertion de l'objet dans la BD via le ContentValues
         return getDB().insert(TABLE_QUESTION_REPONSE, null, values);
@@ -106,6 +106,7 @@ public class QuestionDAO extends DAOBase {
         values.put(COL_BONNE_REPONSE, question.getReponseVrai());
         values.put(COL_MAUVAISE_REPONSE_1, question.getReponseFausse1());
         values.put(COL_MAUVAISE_REPONSE_2, question.getReponseFausse2());
+        values.put(COL_THEME, question.getTheme());
 
         // Insertion de l'objet dans la BD via le ContentValues et l'identifiant
         return getDB().update(TABLE_QUESTION_REPONSE, values, COL_ID + " = " + question.getId(), null);

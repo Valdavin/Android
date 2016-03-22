@@ -1,9 +1,11 @@
-package com.example.davinv.loustik.Culture;
+package com.example.davinv.loustik.DAO;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.example.davinv.loustik.Culture.QuestionDAO;
 
 /**
  * Created by Valentin on 21/03/2016.
