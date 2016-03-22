@@ -22,7 +22,12 @@
             android:name=".Math.JeuMathActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".Culture.JeuCultureActivity" />
-        <activity android:name=".Login.LoginActivity"></activity>
+        <activity android:name=".Login.LoginActivity" />
+        <activity
+            android:name=".Login.FoumulaireUser"
+            android:label="Nouveau Compte">
+
+        </activity>
     </application>
 
 </manifest>
