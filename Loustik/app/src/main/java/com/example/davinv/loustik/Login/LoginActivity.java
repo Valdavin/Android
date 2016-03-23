@@ -1,9 +1,11 @@
 package com.example.davinv.loustik.Login;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.davinv.loustik.Login.FoumulaireUser;
 import com.example.davinv.loustik.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -18,8 +20,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void newUser(View view) {
+        System.out.println("nouvelle user");
+        Intent intent = new Intent(this,FoumulaireUser.class);
+        startActivity(intent);
+
     }
 
     public void anonyme(View view) {
+
     }
 }

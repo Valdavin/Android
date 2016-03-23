@@ -29,7 +29,7 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/Avatar1"/>
+                    android:src="@drawable/avatar1"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -56,13 +56,13 @@
             android:layout_height="wrap_content"
             android:text="Nouveau Compte"
             android:layout_weight="0.5"
-            android:onClick="newUser"/>
+            />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Hors Ligne"
             android:layout_weight="0.5"
-            android:onClick="anonyme"/>
+            />
 
     </LinearLayout>
 

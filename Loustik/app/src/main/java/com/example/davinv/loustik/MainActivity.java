@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.example.davinv.loustik.Culture.JeuCultureActivity;
+import com.example.davinv.loustik.Login.LoginActivity;
 import com.example.davinv.loustik.Math.JeuMathActivity;
+import com.example.davinv.loustik.Login.FoumulaireUser;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -16,8 +18,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_main);
+        Intent intent = new Intent(this,FoumulaireUser.class);
+        startActivity(intent);
     }
 
 
@@ -30,5 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public void main_question(View view) {
         Intent intent = new Intent(this,JeuCultureActivity.class);
         startActivity(intent);
+    }
+
+    public void anonyme(View view) {
     }
 }
