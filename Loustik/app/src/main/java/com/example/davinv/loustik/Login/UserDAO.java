@@ -38,7 +38,8 @@ public class UserDAO extends DAOBase {
 
     // Données pour la table
     private static final String[] DATA = new String[] {
-            "'Ad', 'Hoc', 'swag', '0'"};
+            //"'Ad', 'Hoc', 'swag', '0'"
+    };
 
     // retourne une liste de chaînes de caractères représentant les instructions SQL d'insertion de données dans la table
     public static String[] getInsertSQL() {

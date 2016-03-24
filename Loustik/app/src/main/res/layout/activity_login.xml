@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+<!--            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -36,7 +36,7 @@
                     android:textSize="30sp"
                     android:gravity="center"
                     android:text="Jean Moulin"/>
-            </LinearLayout>
+            </LinearLayout>-->
 
 
 
@@ -56,12 +56,14 @@
             android:layout_height="wrap_content"
             android:text="Nouveau Compte"
             android:layout_weight="0.5"
+            android:onClick="newUser"
             />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Hors Ligne"
             android:layout_weight="0.5"
+            android:onClick="anonyme"
             />
 
     </LinearLayout>

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.davinv.loustik.Culture.QuestionDAO;
+import com.example.davinv.loustik.Login.UserDAO;
 
 /**
  * Created by Valentin on 21/03/2016.
@@ -31,9 +32,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // Créer la table question
         db.execSQL(QuestionDAO.CREATE_TABLE);
+        db.execSQL(UserDAO.CREATE_TABLE);
 
         // Insérer les données
         for (String insert : QuestionDAO.getInsertSQL()) {
+            db.execSQL(insert);
+        }
+        for (String insert : UserDAO.getInsertSQL()) {
             db.execSQL(insert);
         }
 
@@ -49,6 +54,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         // DROP
         db.execSQL(QuestionDAO.DROP_TABLE);
+        db.execSQL(UserDAO.DROP_TABLE);
 
         // Relancer la création
         onCreate(db);
