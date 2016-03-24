@@ -69,6 +69,7 @@ public class JeuCultureActivity extends AppCompatActivity {
 
     }
 
+
     private void initialiserQuestion() {
         if (choixDomaine != THEME_TOUS) {
             listeQuestions = QuestionDAO.getQuestionParTheme(choixDomaine);
