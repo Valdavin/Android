@@ -1,7 +1,8 @@
 package com.example.davinv.loustik.Login;
 
 import java.io.Serializable;
-
+import android.view.View;
+import com.example.davinv.loustik.R;
 /**
  * Created by davinv on 22/03/16.
  */
@@ -65,6 +66,10 @@ public class User implements Serializable {
     public String getAvatar() {
         return avatar;
     }
+
+
+
+
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
