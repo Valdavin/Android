@@ -14,12 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.davinv.loustik.Login.FoumulaireUser;
+import com.example.davinv.loustik.MainMenu;
 import com.example.davinv.loustik.R;
 
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
-    final static int NEW_USER_REQUEST = 0;
+    public final static int NEW_USER_REQUEST = 0;
+    public final static String NUM_USER = "numUser";
 
     private UserDAO uDAO = new UserDAO(this);
     private ArrayList<User> listeUsers;
@@ -35,7 +37,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void connexion(User u) {
-        System.out.println("Connexion en tant que " + u.getPrenom() + " " + u.getNom());
+        System.out.println("nouvelle user");
+        Intent intent = new Intent(this,MainMenu.class);
+        intent.putExtra(NUM_USER,u.getId());
+        startActivity(intent);
     }
 
     public void newUser(View view) {
