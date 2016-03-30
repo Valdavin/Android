@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.example.davinv.loustik.Login.LoginActivity">
+    tools:context=".LoginActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/avatar1"/>
+                  xml  android:src="@drawable/avatar1"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

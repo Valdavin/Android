@@ -1,24 +1,20 @@
 package com.example.davinv.loustik.Login;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.davinv.loustik.Math.JeuMathActivity;
 import com.example.davinv.loustik.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FoumulaireUser extends AppCompatActivity {
+public class FormulaireUser extends AppCompatActivity {
     private ArrayList<String> listeAvatar = new ArrayList<>();
     private LinearLayout layoutAvatar;
     private ImageView avatarSelectione;
@@ -26,7 +22,7 @@ public class FoumulaireUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_foumulaire_user);
+        setContentView(R.layout.activity_formulaire_user);
         layoutAvatar = (LinearLayout) findViewById(R.id.ll_choix_avatar);
         initialiserAvatar();
 
