@@ -7,8 +7,6 @@ import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.method.DigitsKeyListener;
-import android.text.method.KeyListener;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,9 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.example.davinv.loustik.DAO.DAOBase;
+import com.example.davinv.loustik.Login.User;
+import com.example.davinv.loustik.Login.UserDAO;
+import com.example.davinv.loustik.LoginActivity;
 import com.example.davinv.loustik.R;
 
-public class JeuMathActivity extends AppCompatActivity {
+public class JeuMathMenuActivity extends AppCompatActivity {
 
     // CONSTANTES
 
@@ -30,19 +32,36 @@ public class JeuMathActivity extends AppCompatActivity {
     public static final String OPERATEUR_MULTIPLICATION = "x";
     public static final String OPERATEUR_SOUSTRACTION = "-";
     public static final String OPERATEUR_DIVISION = "÷";
-
-
-
     private String choixOperateur;
+
+    // Sur quel layout on est (pour la sauvegarde)
+    public static final String STATUS_EXERCICE = "Exercice";
+    public static final String STATUS_RESULTAT = "Reponse";
+    public static final String STATUS_MAIN = "Main";
+    private String statusCour;
+
+    //Sauvegarde
+    public static final String STATE_NUMEROPAGECOUR = "numeroPageCour";
+    public static final String STATE_SCORE = "score";
+    public static final String STATE_USER = "user";
+    public static final String STATE_STATUS = "status";
+    public static final String STATE_JEUMATH = "jeuMath";
+    public static final String STATE_OPERATEUR = "choixOperateur";
+
+
+
     private int rep = 0;
     private int numeroPageCour = 0;
+    private int score = 0;
+
+    private User u;
+    private UserDAO uDAO = new UserDAO(this);
 
     // MULTIPLICATION
     private static int numeroTabl = 42;
 
     // CLASSES
     private JeuMathClass Jeu_Math ;
-    private LinearLayout MainLayout;
 
 
 
@@ -51,7 +70,10 @@ public class JeuMathActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jeu_math);
         Jeu_Math = new JeuMathClass();
-        MainLayout = (LinearLayout) findViewById(R.id.math_main_layout);
+        int userNum = getIntent().getIntExtra(LoginActivity.NUM_USER,0);
+        uDAO.open();
+        u = uDAO.retrieveByID(userNum);
+        statusCour = STATUS_MAIN;
 
 
     }
@@ -59,6 +81,42 @@ public class JeuMathActivity extends AppCompatActivity {
     /////////////////////////
     //  GENERALE
 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        System.out.println("onSaveInstanceState");
+        outState.putInt(STATE_SCORE, score);
+        outState.putInt(STATE_USER, u.getId());
+        outState.putInt(STATE_NUMEROPAGECOUR,numeroPageCour);
+        outState.putString(STATE_STATUS, statusCour);
+        outState.putParcelable(STATE_JEUMATH, Jeu_Math);
+        outState.putString(STATE_OPERATEUR, choixOperateur);
+        super.onSaveInstanceState(outState);
+
+
+    }
+    public void  onRestoreInstanceState (Bundle  savedInstanceState ) {
+        // Always call the superclass so it can restore
+        // the view hierarchy
+        System.out.println("onRestoreInstanceState");
+        super.onRestoreInstanceState ( savedInstanceState );
+        // Restore state members from saved instance
+        score  =  savedInstanceState.getInt(STATE_SCORE);
+        u = uDAO.retrieveByID(savedInstanceState.getInt(STATE_USER));
+        numeroPageCour  =  savedInstanceState.getInt(STATE_NUMEROPAGECOUR);
+        statusCour  =  savedInstanceState.getString(STATE_STATUS);
+        Jeu_Math = savedInstanceState.getParcelable(STATE_JEUMATH);
+        choixOperateur = savedInstanceState.getString(STATE_OPERATEUR);
+
+        switch (statusCour) {
+            case STATUS_EXERCICE:
+                viewExerciceMath(numeroPageCour);
+                break;
+            case STATUS_RESULTAT:
+                viewResultat();
+                break;
+        }
+    }
 
     public void jeuMathChoix(View view) {
 
@@ -92,6 +150,9 @@ public class JeuMathActivity extends AppCompatActivity {
     public void corriger() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Résultat");
+        u.addScore((NOMBRE_OPERATIONS - Jeu_Math.nbrErreur(choixOperateur)) * 10);
+        uDAO.update(u);
+
 
         if (!Jeu_Math.estJuste(choixOperateur)) {
             int nbrerreur = Jeu_Math.nbrErreur(choixOperateur);
@@ -144,6 +205,7 @@ public class JeuMathActivity extends AppCompatActivity {
     //////////////////////////
 
     public void viewExerciceMath(final int numAddDansListe) {
+        statusCour = STATUS_EXERCICE;
         //Déclaration et Initialisation variable
         int nbr1 = Jeu_Math.getNumAt(2 * numAddDansListe);
         int nbr2 = Jeu_Math.getNumAt(2 * numAddDansListe + 1);
@@ -152,63 +214,50 @@ public class JeuMathActivity extends AppCompatActivity {
 
 
         //Génaration de la page
-        MainLayout.removeAllViews();
+        setContentView(R.layout.activity_jeu_math_exercice);
 
 
-        LinearLayout ln1 = new LinearLayout(this);
-        ln1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
-        ln1.setGravity(Gravity.CENTER);
-        ln1.setOrientation(LinearLayout.HORIZONTAL);
+        //Opération
+        TextView twOperation = (TextView)findViewById(R.id.Jeu_Math_Exercice_Operation);
+        twOperation.setText(nbr1 + " " + choixOperateur + " " + nbr2 + " = ");
 
-        TextView ln1_tw1 = new TextView(this);
-        ln1_tw1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        ln1_tw1.setTextSize(50);
-        ln1_tw1.setText(nbr1 + " " + choixOperateur + " " + nbr2 + " = ");
 
-        final EditText ln1_et1 = new EditText(this);
-        ln1_et1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        ln1_et1.setTextSize(50);
+        // Réponse
+        final EditText etReponse = (EditText)findViewById(R.id.Jeu_Math_Exercice_Reponse);
         if (rep == 0) {
-            ln1_et1.setText("");
+            etReponse.setText("");
         } else {
-            ln1_et1.setText(String.valueOf(rep));
+            etReponse.setText(String.valueOf(rep));
         }
 
-        ln1_et1.setInputType(InputType.TYPE_CLASS_NUMBER);
-        ln1_et1.setRawInputType(Configuration.KEYBOARD_12KEY);
-
-        ln1_et1.requestFocus();
-
+        etReponse.setInputType(InputType.TYPE_CLASS_NUMBER);
+        etReponse.setRawInputType(Configuration.KEYBOARD_12KEY);
+        etReponse.requestFocus();
 
 
 
-        // TEXT POUR NUMERO PAGE
+
+        // Numero de Page
+        TextView numPage = (TextView) findViewById(R.id.Jeu_Math_Exercic_NumPage);
         TextView tw1 = new TextView(this);
-        tw1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        tw1.setGravity(Gravity.CENTER);
-        tw1.setText(numAddDansListe+1 + "/" + NOMBRE_OPERATIONS);
+        numPage.setText(numAddDansListe + 1 + "/" + NOMBRE_OPERATIONS);
 
-
-        LinearLayout ln2 = new LinearLayout(this);
-        ln2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,0f));
-        ln2.setOrientation(LinearLayout.HORIZONTAL);
-        ln2.setWeightSum(0);
 
 
         // BOUTON PRECEDENT ET SUIVANT
-        Button ln2_bt1 = new Button(this);
-        ln2_bt1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,0.5f));
-        ln2_bt1.setText("Précedent");
-        ln2_bt1.setTextSize(20);
+        Button btSuiv = (Button) findViewById(R.id.Jeu_Math_Exercice_BoutonSuivant);
+        Button btPrec = (Button) findViewById(R.id.Jeu_Math_Exercice_BoutonPrec);
+
+        btPrec.setText("Précedent");
         if (numAddDansListe == 0) {
-            ln2_bt1.setVisibility(View.INVISIBLE);
-            ln2_bt1.setClickable(false);
+            btPrec.setVisibility(View.INVISIBLE);
+            btPrec.setClickable(false);
         }
-        ln2_bt1.setOnClickListener(new View.OnClickListener() {
+        btPrec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!ln1_et1.getText().toString().equals("")) {
-                    Jeu_Math.setReponseAt(numeroPageCour, Integer.parseInt(ln1_et1.getText().toString()));
+                if (!etReponse.getText().toString().equals("")) {
+                    Jeu_Math.setReponseAt(numeroPageCour, Integer.parseInt(etReponse.getText().toString()));
 
 
                 } else {
@@ -221,27 +270,23 @@ public class JeuMathActivity extends AppCompatActivity {
             }
         });
 
-        Button ln2_bt2 = new Button(this);
-        ln2_bt2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f));
-        ln2_bt2.setText("Suivant");
-        ln2_bt2.setTextSize(20);
         if (numAddDansListe == NOMBRE_OPERATIONS -1) {
-            ln2_bt2.setText("Corriger");
-            ln2_bt2.setOnClickListener(new View.OnClickListener() {
+            btSuiv.setText("Corriger");
+            btSuiv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     corriger();
                 }
             });
         } else {
-            ln2_bt2.setOnClickListener(new View.OnClickListener() {
+            btSuiv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Faudrait rajouter un truc pour éviter de mettre un nombre trop grand.
-                    if (!ln1_et1.getText().toString().equals("")) {
-                        Jeu_Math.setReponseAt(numeroPageCour, Integer.parseInt(ln1_et1.getText().toString()));
+                    if (!etReponse.getText().toString().equals("")) {
+                        Jeu_Math.setReponseAt(numeroPageCour, Integer.parseInt(etReponse.getText().toString()));
 
 
                     } else {
@@ -254,37 +299,19 @@ public class JeuMathActivity extends AppCompatActivity {
                 }
             });
         }
-        ln1.addView(ln1_tw1);
-        ln1.addView(ln1_et1);
-
-        ln2.addView(ln2_bt1);
-        ln2.addView(ln2_bt2);
-
-        MainLayout.addView(ln1);
-        MainLayout.addView(tw1);
-        MainLayout.addView(ln2);
-
-
-
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(this.getCurrentFocus(), InputMethodManager.SHOW_FORCED);
-
-
     }
 
     public void viewResultat() {
+        statusCour = STATUS_RESULTAT;
         System.out.println("VIEW RESULTAT");
-        MainLayout.removeAllViews();
+        setContentView(R.layout.activity_jeu_math_resultat);
 
 
 
 
-        LinearLayout ll_conteneur_rep = new LinearLayout(this);
-        ll_conteneur_rep.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
-        ll_conteneur_rep.setOrientation(LinearLayout.VERTICAL);
-
-
-
+        LinearLayout ll_conteneur_rep = (LinearLayout)findViewById(R.id.Jeu_Math_Resultat_Layout);
         for (int i=0; i < NOMBRE_OPERATIONS; i++) {
             LinearLayout ll_rep = new LinearLayout(this);
             ll_rep.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -326,36 +353,14 @@ public class JeuMathActivity extends AppCompatActivity {
             ll_conteneur_rep.addView(ll_rep);
         }
 
-        Button bt = new Button(this);
-        LinearLayout.LayoutParams ma_param = new  LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0f);
-        ma_param.gravity = Gravity.CENTER;
-
-        bt.setLayoutParams(ma_param);
-        bt.setText("Finir");
+        Button bt = (Button) findViewById(R.id.Jeu_Math_Resultat_BoutonFinir);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                statusCour = STATUS_MAIN;
                 recreate();
             }
         });
-
-        MainLayout.addView(ll_conteneur_rep);
-        MainLayout.addView(bt);
-
-
-        /*
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="Finir"
-        android:layout_gravity="center"/>
-
-
-         */
-
-
-
     }
 
 
@@ -366,7 +371,7 @@ public class JeuMathActivity extends AppCompatActivity {
     /*
     * Affiche le choix du numéro de la table de multiplication.
     *
-     */
+     *//*
     public void viewChoixNbrMultiplication(){
         MainLayout.removeAllViews();
         TextView tw = new TextView(this);
@@ -402,13 +407,13 @@ public class JeuMathActivity extends AppCompatActivity {
 
 
 
-    }
+    }*/
 
 
     /*
     * Affiche la table de multiplication
     *
-     */
+
     public void viewTableMultiplication() {
         MainLayout.removeAllViews();
         for (int i = 0; i<10; i++) {
@@ -473,5 +478,5 @@ public class JeuMathActivity extends AppCompatActivity {
 
         }
 
-    }
+    }*/
 }

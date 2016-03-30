@@ -1,25 +1,22 @@
-package com.example.davinv.loustik.Login;
+package com.example.davinv.loustik;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.davinv.loustik.Culture.JeuCultureActivity;
 import com.example.davinv.loustik.Login.User;
 import com.example.davinv.loustik.Login.UserDAO;
-import com.example.davinv.loustik.LoginActivity;
-import com.example.davinv.loustik.Math.JeuMathActivity;
-import com.example.davinv.loustik.R;
+import com.example.davinv.loustik.Math.JeuMathMenuActivity;
 
 
 public class MenuPrincipalActivity extends AppCompatActivity {
 
-    User u;
-    UserDAO uDAO = new UserDAO(this);
+    private User u;
+    private UserDAO uDAO = new UserDAO(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +29,23 @@ public class MenuPrincipalActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onResume() {
+        System.out.println("Resume du menu");
+        u = uDAO.retrieveByID(u.getId());
+        super.onResume();
+        setViewUser();
+    }
 
     public void main_math(View view) {
-        Intent intent = new Intent(this,JeuMathActivity.class);
+        Intent intent = new Intent(this,JeuMathMenuActivity.class);
+        intent.putExtra(LoginActivity.NUM_USER,u.getId());
         startActivity(intent);
     }
 
     public void main_question(View view) {
         Intent intent = new Intent(this,JeuCultureActivity.class);
+        intent.putExtra(LoginActivity.NUM_USER,u.getId());
         startActivity(intent);
     }
 

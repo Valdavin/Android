@@ -1,7 +1,6 @@
 package com.example.davinv.loustik;
 
 import android.content.Intent;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.example.davinv.loustik.Login.FormulaireUser;
 import com.example.davinv.loustik.Login.User;
 import com.example.davinv.loustik.Login.UserDAO;
-import com.example.davinv.loustik.Login.MenuPrincipalActivity;
 
 import java.util.ArrayList;
 

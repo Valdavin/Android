@@ -1,20 +1,34 @@
 package com.example.davinv.loustik.Math;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
  * Created by Valentin on 03/03/2016.
  */
-public class JeuMathClass {
+public class JeuMathClass implements Parcelable{
     private int tailleListeNum;
     private ArrayList<Integer> listeNum = new ArrayList<>(tailleListeNum *2);
     private ArrayList<Integer> listeReponsesAdd = new ArrayList<>(tailleListeNum);
 
-    public JeuMathClass() {
+    public static final Parcelable.Creator<JeuMathClass> CREATOR = new Parcelable.Creator<JeuMathClass>()
+    {
+        @Override
+        public JeuMathClass createFromParcel(Parcel source)
+        {
+            return new JeuMathClass();
+        }
 
-
-    }
+        @Override
+        public JeuMathClass[] newArray(int size)
+        {
+            return new JeuMathClass[size];
+        }
+    };
+    public JeuMathClass()  {    }
 
     public void initialiserListeNumDivision (int nbIter, int min, int max) {
         tailleListeNum = nbIter;
@@ -132,7 +146,16 @@ public class JeuMathClass {
         }
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
 
-
+        dest.writeInt(tailleListeNum);
+        dest.writeList(listeNum);
+        dest.writeList(listeReponsesAdd);
+    }
 }

@@ -9,30 +9,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Login.MenuPrincipalActivity"
+            android:name=".MenuPrincipalActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Math.JeuMathActivity"
+            android:name=".Math.JeuMathMenuActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".Culture.JeuCultureActivity" />
-        <activity
-            android:name=".LoginActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
-
             </intent-filter>
         </activity>
         <activity
             android:name=".Login.FormulaireUser"
-            android:label="Nouveau Compte">
-
-        </activity>
+            android:label="Nouveau Compte" />
+        <activity android:name=".Math.JeuMathExerciceActivity" />
+        <activity android:name=".Culture.PropositionQuestionActivity"></activity>
     </application>
 
 </manifest>

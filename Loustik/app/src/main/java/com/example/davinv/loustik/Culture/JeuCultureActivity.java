@@ -1,20 +1,20 @@
 package com.example.davinv.loustik.Culture;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.davinv.loustik.Login.User;
+import com.example.davinv.loustik.Login.UserDAO;
+import com.example.davinv.loustik.LoginActivity;
 import com.example.davinv.loustik.R;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,20 +30,30 @@ public class JeuCultureActivity extends AppCompatActivity {
     public static final String THEME_GEOGRAPHIE = "GEOGRAPHIE";
     public static final String THEME_GENERALE = "GENERALE";
     public static final String THEME_SCIENCE = "SCIENCE";
-    private static final String[] THEME_ARRAY = { THEME_TOUS, THEME_HISOIRE, THEME_GEOGRAPHIE, THEME_GENERALE, THEME_SCIENCE};
+    public static final String[] THEME_ARRAY = { THEME_TOUS, THEME_HISOIRE, THEME_GEOGRAPHIE, THEME_GENERALE, THEME_SCIENCE};
 
     private static final int TPS_ATTENTE = 2000; //temps atendu entre 2 qestion
 
-    static final String STATE_QUESTION = "question";
+    public static final String STATE_LISTE_QUESTION = "liste_question";
+    public static final String STATE_SCORE = "score";
+    public static final String STATE_USER = "user";
+    public static final String STATE_STATUS = "status";
 
+
+
+    public static final String STATUS_MAIN = "main";
+    public static final String STATUS_QUESTION = "question";
+    private String statusCour;
 
 
     private ArrayList<Question> listeQuestions;
     private String choixDomaine;
-    private int questionCour = 0;
     private int score = 0;
 
-    private Question question;
+    // USER
+    private User u;
+    private UserDAO uDAO = new UserDAO(this);
+
     private LinearLayout MainLayout;
     private QuestionDAO QuestionDAO = new QuestionDAO(this);
 
@@ -56,16 +66,44 @@ public class JeuCultureActivity extends AppCompatActivity {
         listeQuestions = new ArrayList<>();
         QuestionDAO.open();
 
-        // Check whether we're recreating a previously destroyed instance
-        if (savedInstanceState != null) {
-            // Restore value of members from saved state
-            questionCour = (int) savedInstanceState.getSerializable(STATE_QUESTION);
+        int userNum = getIntent().getIntExtra(LoginActivity.NUM_USER,0);
+        uDAO.open();
+        u = uDAO.retrieveByID(userNum);
 
-        } else {
-            // Probably initialize members with default values for a new instance
+
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        System.out.println("onSaveInstanceState");
+        outState.putInt(STATE_SCORE, score);
+        outState.putInt(STATE_USER, u.getId());
+        outState.putParcelableArrayList(STATE_LISTE_QUESTION, listeQuestions);
+        outState.putString(STATE_STATUS, statusCour);
+        super.onSaveInstanceState(outState);
+
+
+    }
+    public void  onRestoreInstanceState (Bundle  savedInstanceState ) {
+        // Always call the superclass so it can restore
+        // the view hierarchy
+        System.out.println("onRestoreInstanceState");
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore state members from saved instance
+        score  =  savedInstanceState.getInt(STATE_SCORE);
+        u = uDAO.retrieveByID(savedInstanceState.getInt(STATE_USER));
+        listeQuestions  =  savedInstanceState.getParcelableArrayList(STATE_LISTE_QUESTION);
+        statusCour = savedInstanceState.getString(STATE_STATUS);
+
+        switch (statusCour) {
+            case STATUS_MAIN:
+                break;
+            case STATUS_QUESTION:
+                setViewQuestion();
+                updateContent();
 
         }
-
 
     }
 
@@ -109,23 +147,25 @@ public class JeuCultureActivity extends AppCompatActivity {
     public void verifReponse(View v) {
         Button bouton = (Button) v;
 
-        if (listeQuestions.get(questionCour).isBonneRep(bouton.getText().toString())) {
+        if (listeQuestions.get(0).isBonneRep(bouton.getText().toString())) {
+            u.addScore(10);
+            uDAO.update(u);
             score = score + 10;
         }
     }
 
     public void updateContent() {
 
-        if (questionCour < listeQuestions.size()) {
+        if (!listeQuestions.isEmpty()) {
 
-            ArrayList<String> listeRep = listeQuestions.get(questionCour).getReponses();
-            String question = listeQuestions.get(questionCour).getQuestion();
+            ArrayList<String> listeRep = listeQuestions.get(0).getReponses();
+            String question = listeQuestions.get(0).getQuestion();
 
-            LinearLayout ll = (LinearLayout) MainLayout.getChildAt(0);
-            TextView et = (TextView) ll.getChildAt(0);
-            Button bt1 = (Button) ll.getChildAt(1);
-            Button bt2 = (Button) ll.getChildAt(2);
-            Button bt3 = (Button) ll.getChildAt(3);
+
+            TextView et = (TextView) findViewById(R.id.Jeu_Culture_Question_Intitule);
+            Button bt1 = (Button) findViewById(R.id.Jeu_Culture_Question_B1);
+            Button bt2 = (Button) findViewById(R.id.Jeu_Culture_Question_B2);
+            Button bt3 = (Button) findViewById(R.id.Jeu_Culture_Question_B3);
 
             et.setText(question);
             bt1.setText(listeRep.get(0));
@@ -137,8 +177,7 @@ public class JeuCultureActivity extends AppCompatActivity {
             bt3.setText(listeRep.get(2));
             bt3.setBackgroundResource(android.R.drawable.btn_default);
 
-            LinearLayout ll2 = (LinearLayout) MainLayout.getChildAt(1);
-            TextView tw = (TextView) ll2.getChildAt(0);
+            TextView tw = (TextView) findViewById(R.id.Jeu_Culture_Question_Score);
 
             tw.setText("Score = "+score);
 
@@ -149,65 +188,14 @@ public class JeuCultureActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        // Save the user's current game state
-        outState.putSerializable(STATE_QUESTION, questionCour);
-
-        //
-        super.onSaveInstanceState(outState);
-    }
-
-    public void retour(View view) {
-        super.finish();
-    }
 
 
     public void proposerQuestion(View view) {
-        setViewProposerQuestion();
+        Intent intent = new Intent(this,PropositionQuestionActivity.class);
+        startActivity(intent);
     }
 
-    public void validerPropQuestion(View view) {
-        // On remet les bouton a jour si on s'est trompé avant
-        findViewById(R.id.et_propQ_intitule).setBackgroundResource(android.R.drawable.edit_text);
-        findViewById(R.id.et_propQ_bRep).setBackgroundResource(android.R.drawable.edit_text);
-        findViewById(R.id.et_propQ_mRep1).setBackgroundResource(android.R.drawable.edit_text);
-        findViewById(R.id.et_propQ_mRep2).setBackgroundResource(android.R.drawable.edit_text);
 
-
-        Spinner themeSpinerView = (Spinner) findViewById(R.id.spinner_theme);
-        String intitule = ((EditText) findViewById(R.id.et_propQ_intitule)).getText().toString();
-        String bRep = ((EditText) findViewById(R.id.et_propQ_bRep)).getText().toString();
-        String mRep1 = ((EditText) findViewById(R.id.et_propQ_mRep1)).getText().toString();
-        String mRep2 = ((EditText) findViewById(R.id.et_propQ_mRep2)).getText().toString();
-
-        System.out.println(themeSpinerView.getSelectedItem() + " " + intitule);
-        if (!intitule.equals("") && !bRep.equals("") && !mRep1.equals("") && !mRep2.equals("")) {
-
-            Question q = new Question(intitule,bRep,mRep1,mRep2,(String) themeSpinerView.getSelectedItem());
-            QuestionDAO.insert(q);
-            System.out.printf("Insertion réeussi");
-            this.recreate();
-
-        } else {
-            // On met en valeur les case où il manque des informations.
-            if (intitule.equals("")) {
-                findViewById(R.id.et_propQ_intitule).setBackgroundResource(R.drawable.editextcustom);
-            }
-            if (bRep.equals("")) {
-                findViewById(R.id.et_propQ_bRep).setBackgroundResource(R.drawable.editextcustom);
-            }
-            if (mRep1.equals("")) {
-                findViewById(R.id.et_propQ_mRep1).setBackgroundResource(R.drawable.editextcustom);
-            }
-            if (mRep2.equals("")) {
-                findViewById(R.id.et_propQ_mRep2).setBackgroundResource(R.drawable.editextcustom);
-            }
-        }
-
-
-    }
 
 
 
@@ -215,29 +203,11 @@ public class JeuCultureActivity extends AppCompatActivity {
     // VIEW
 
     private void setViewQuestion() {
+        statusCour = STATUS_QUESTION;
         System.out.println("setViewQuestion");
-        MainLayout.removeAllViews();
+        setContentView(R.layout.activity_jeu_culture_question);
 
-        LinearLayout ll1 = new LinearLayout(this);
-        ll1.setOrientation(LinearLayout.VERTICAL);
-        ll1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f));
 
-        TextView tw = new TextView(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(5, 5, 5, 5);
-        tw.setLayoutParams(params);
-        tw.setTextSize(25);
-        tw.setGravity(Gravity.CENTER);
-        tw.setTextAppearance(getApplicationContext(), R.style.boldText);
-
-        Button bt1 = new Button(this);
-        bt1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        Button bt2 = new Button(this);
-        bt2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        Button bt3 = new Button(this);
-        bt3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
 
 
@@ -251,7 +221,7 @@ public class JeuCultureActivity extends AppCompatActivity {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        questionCour++;
+                        listeQuestions.remove(0);
                         updateContent();
                     }
                 }, TPS_ATTENTE);
@@ -259,51 +229,30 @@ public class JeuCultureActivity extends AppCompatActivity {
 
             }
         };
+        Button bt1 = (Button) findViewById(R.id.Jeu_Culture_Question_B1);
+        Button bt2 = (Button) findViewById(R.id.Jeu_Culture_Question_B2);
+        Button bt3 = (Button) findViewById(R.id.Jeu_Culture_Question_B3);
+        Button bt_suite = (Button) findViewById(R.id.Jeu_Culture_Question_Retour);
 
         bt1.setOnClickListener(boutonClick);
         bt2.setOnClickListener(boutonClick);
         bt3.setOnClickListener(boutonClick);
-
-
-        LinearLayout ll2 = new LinearLayout(this);
-        ll2.setOrientation(LinearLayout.VERTICAL);
-        ll2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0f));
-
-        TextView tw_score = new TextView(this);
-        tw_score.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        tw_score.setGravity(Gravity.CENTER);
-
-        Button bt_suite = new Button(this);
-        bt_suite.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        bt_suite.setText("Retour");
         bt_suite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                statusCour = STATUS_MAIN;
                 recreate();
             }
         });
-        bt_suite.setGravity(Gravity.CENTER);
 
-
-        ll1.addView(tw);
-        ll1.addView(bt1);
-        ll1.addView(bt2);
-        ll1.addView(bt3);
-
-        ll2.addView(tw_score);
-        ll2.addView(bt_suite);
-
-        MainLayout.addView(ll1);
-        MainLayout.addView(ll2);
         
     }
 
     private void setViewAfficherReponses(){
-        Question q = listeQuestions.get(questionCour);
-        LinearLayout ll = (LinearLayout) MainLayout.getChildAt(0);
-        Button bt1 = (Button) ll.getChildAt(1);
-        Button bt2 = (Button) ll.getChildAt(2);
-        Button bt3 = (Button) ll.getChildAt(3);
+        Question q = listeQuestions.get(0);
+        Button bt1 = (Button) findViewById(R.id.Jeu_Culture_Question_B1);
+        Button bt2 = (Button) findViewById(R.id.Jeu_Culture_Question_B2);
+        Button bt3 = (Button) findViewById(R.id.Jeu_Culture_Question_B3);
 
         if (q.isBonneRep(bt1)) {
             bt1.setBackgroundColor(getResources().getColor(R.color.reponseJuste));
@@ -327,7 +276,7 @@ public class JeuCultureActivity extends AppCompatActivity {
     private void setViewProposerQuestion() {
         System.out.println("setViewProposerQuestion");
         MainLayout.removeAllViews();
-        setContentView(R.layout.proposerquestion);
+        setContentView(R.layout.activity_proposition_question);
 
         Spinner themeSpinerView = (Spinner) findViewById(R.id.spinner_theme);
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, THEME_ARRAY);
