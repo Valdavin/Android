@@ -1,4 +1,4 @@
-package com.example.davinv.loustik.Login;
+package com.example.davinv.loustik.User;
 
 import android.annotation.TargetApi;
 import android.os.Build;
@@ -29,6 +29,9 @@ public class FormulaireUser extends AppCompatActivity {
 
     }
 
+    /**
+     * Initialise la liste des avatar disponible.
+     */
     private void initialiserAvatar() {
         String[] lista = {"avatar1","avatar2","avatar3","avatar4","avatar5","avatar6","avatar7","avatar8","avatar9"};
         listeAvatar = new ArrayList(Arrays.asList(lista));
@@ -55,9 +58,11 @@ public class FormulaireUser extends AppCompatActivity {
         }
 
     }
-    private void choixAvatar(View v) {
 
-    }
+    /**
+     * Vérifie que tout les champs sont remplis et valise l'inscription.
+     * @param view Bouton appuyé
+     */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void newUserValider(View view) {
         // Maj affichage

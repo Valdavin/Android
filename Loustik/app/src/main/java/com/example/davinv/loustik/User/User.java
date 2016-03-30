@@ -1,8 +1,7 @@
-package com.example.davinv.loustik.Login;
+package com.example.davinv.loustik.User;
 
 import java.io.Serializable;
-import android.view.View;
-import com.example.davinv.loustik.R;
+
 /**
  * Created by davinv on 22/03/16.
  */
@@ -55,12 +54,16 @@ public class User implements Serializable {
         return score;
     }
 
-    public void setScore(int score) {
+    private void setScore(int score) {
         this.score = score;
     }
 
-    public void addScore(int score) {
-        this.score = this.score + score;
+    /**
+     * Ajoute au <b>s</b> au score de l'user
+     * @param s
+     */
+    public void addScore(int s) {
+        this.score = this.score + s;
     }
 
     public String getAvatar() {

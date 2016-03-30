@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.davinv.loustik.Culture.JeuCultureActivity;
-import com.example.davinv.loustik.Login.User;
-import com.example.davinv.loustik.Login.UserDAO;
+import com.example.davinv.loustik.User.User;
+import com.example.davinv.loustik.User.UserDAO;
 import com.example.davinv.loustik.Math.JeuMathMenuActivity;
 
 
@@ -37,18 +37,29 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         setViewUser();
     }
 
+    /**
+     * Démarre le jeu de Math.
+     * @param view Bouton appuyé.
+     */
     public void main_math(View view) {
         Intent intent = new Intent(this,JeuMathMenuActivity.class);
         intent.putExtra(LoginActivity.NUM_USER,u.getId());
         startActivity(intent);
     }
 
+    /**
+     * Démare le jeu de Culture
+     * @param view Bouton appuyé.
+     */
     public void main_question(View view) {
         Intent intent = new Intent(this,JeuCultureActivity.class);
         intent.putExtra(LoginActivity.NUM_USER,u.getId());
         startActivity(intent);
     }
 
+    /**
+     * Affiche les information sur l'user connecté.
+     */
     private void setViewUser() {
         ImageView userImage = (ImageView) findViewById(R.id.MainMenu_User_Image);
         TextView userName = (TextView) findViewById(R.id.MainMenu_User_Name);

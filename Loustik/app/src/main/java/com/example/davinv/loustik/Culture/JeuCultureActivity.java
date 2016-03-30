@@ -7,13 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.davinv.loustik.Login.User;
-import com.example.davinv.loustik.Login.UserDAO;
+import com.example.davinv.loustik.User.User;
+import com.example.davinv.loustik.User.UserDAO;
 import com.example.davinv.loustik.LoginActivity;
 import com.example.davinv.loustik.R;
 import java.util.ArrayList;
@@ -32,21 +31,22 @@ public class JeuCultureActivity extends AppCompatActivity {
     public static final String THEME_SCIENCE = "SCIENCE";
     public static final String[] THEME_ARRAY = { THEME_TOUS, THEME_HISOIRE, THEME_GEOGRAPHIE, THEME_GENERALE, THEME_SCIENCE};
 
-    private static final int TPS_ATTENTE = 2000; //temps atendu entre 2 qestion
+    private static final int TPS_ATTENTE = 2000; //temps atendu entre 2 questions.
 
+    // ETAT A SAUVEGARDER
     public static final String STATE_LISTE_QUESTION = "liste_question";
     public static final String STATE_SCORE = "score";
     public static final String STATE_USER = "user";
     public static final String STATE_STATUS = "status";
 
 
-
+    // STATUS
     public static final String STATUS_MAIN = "main";
     public static final String STATUS_QUESTION = "question";
     private String statusCour;
 
 
-    private ArrayList<Question> listeQuestions;
+
     private String choixDomaine;
     private int score = 0;
 
@@ -54,22 +54,23 @@ public class JeuCultureActivity extends AppCompatActivity {
     private User u;
     private UserDAO uDAO = new UserDAO(this);
 
-    private LinearLayout MainLayout;
+    // QUESTION
     private QuestionDAO QuestionDAO = new QuestionDAO(this);
+    private ArrayList<Question> listeQuestions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jeu_culture);
 
-        MainLayout = (LinearLayout) findViewById(R.id.math_main_layout);
         listeQuestions = new ArrayList<>();
         QuestionDAO.open();
+        statusCour = STATUS_MAIN; //La vue à afficher est celle du menu.
 
-        int userNum = getIntent().getIntExtra(LoginActivity.NUM_USER,0);
+        int userNum = getIntent().getIntExtra(LoginActivity.NUM_USER,0); // Récupère l'id de l'user
         uDAO.open();
-        u = uDAO.retrieveByID(userNum);
-
+        u = uDAO.retrieveByID(userNum); // récupère l'User
+        uDAO.close();
 
 
     }
@@ -92,7 +93,11 @@ public class JeuCultureActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         // Restore state members from saved instance
         score  =  savedInstanceState.getInt(STATE_SCORE);
+
+        uDAO.open();
         u = uDAO.retrieveByID(savedInstanceState.getInt(STATE_USER));
+        uDAO.close();
+
         listeQuestions  =  savedInstanceState.getParcelableArrayList(STATE_LISTE_QUESTION);
         statusCour = savedInstanceState.getString(STATE_STATUS);
 
@@ -108,6 +113,9 @@ public class JeuCultureActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Initialise la liste de Question en fonction du thème choisi
+     */
     private void initialiserQuestion() {
         if (choixDomaine != THEME_TOUS) {
             listeQuestions = QuestionDAO.getQuestionParTheme(choixDomaine);
@@ -120,6 +128,10 @@ public class JeuCultureActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Affiche la vue des question en fonction du bouton appuyé.
+     * @param view Bouton appuyé
+     */
     public void jeuMathChoix(View view) {
         switch (view.getId()) {
             case R.id.Jeu_Culture_Tout:
@@ -144,16 +156,27 @@ public class JeuCultureActivity extends AppCompatActivity {
         updateContent();
     }
 
+    /**
+     * Vérifie que la réponse est juste et incrément le score si il faut.
+     * @param v Bouton appuyé.
+     */
     public void verifReponse(View v) {
         Button bouton = (Button) v;
 
         if (listeQuestions.get(0).isBonneRep(bouton.getText().toString())) {
             u.addScore(10);
+
+            uDAO.open();
             uDAO.update(u);
+            uDAO.close();
             score = score + 10;
         }
     }
 
+    /**
+     * Met à jour la vue des question.
+     * Met à jour l'intitulé, les réponses et le score.
+     */
     public void updateContent() {
 
         if (!listeQuestions.isEmpty()) {
@@ -189,7 +212,10 @@ public class JeuCultureActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Démarre l'activité de proposition de question.
+     * @param view Bouton appuyé
+     */
     public void proposerQuestion(View view) {
         Intent intent = new Intent(this,PropositionQuestionActivity.class);
         startActivity(intent);
@@ -202,6 +228,9 @@ public class JeuCultureActivity extends AppCompatActivity {
     //////////////////
     // VIEW
 
+    /**
+     * Créé la vue des question.
+     */
     private void setViewQuestion() {
         statusCour = STATUS_QUESTION;
         System.out.println("setViewQuestion");
@@ -248,6 +277,9 @@ public class JeuCultureActivity extends AppCompatActivity {
         
     }
 
+    /**
+     * Met en couleur les réponses selon si elles sont vrais ou fausses.
+     */
     private void setViewAfficherReponses(){
         Question q = listeQuestions.get(0);
         Button bt1 = (Button) findViewById(R.id.Jeu_Culture_Question_B1);
@@ -273,17 +305,12 @@ public class JeuCultureActivity extends AppCompatActivity {
         }
     }
 
-    private void setViewProposerQuestion() {
-        System.out.println("setViewProposerQuestion");
-        MainLayout.removeAllViews();
-        setContentView(R.layout.activity_proposition_question);
 
-        Spinner themeSpinerView = (Spinner) findViewById(R.id.spinner_theme);
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, THEME_ARRAY);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        themeSpinerView.setAdapter(arrayAdapter);
+    /**
+     * Ferme l'activité.
+     * @param view Bouton appuyé
+     */
+    public void retour(View view) {
+        super.finish();
     }
-
-
-
 }

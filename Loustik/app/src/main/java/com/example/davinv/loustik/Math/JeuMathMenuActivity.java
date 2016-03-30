@@ -13,12 +13,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import com.example.davinv.loustik.DAO.DAOBase;
-import com.example.davinv.loustik.Login.User;
-import com.example.davinv.loustik.Login.UserDAO;
+import com.example.davinv.loustik.User.User;
+import com.example.davinv.loustik.User.UserDAO;
 import com.example.davinv.loustik.LoginActivity;
 import com.example.davinv.loustik.R;
 
@@ -28,19 +26,20 @@ public class JeuMathMenuActivity extends AppCompatActivity {
 
     private static final int NOMBRE_OPERATIONS = 10;
 
+    // OPERATIONS ELEMENTAIRES
     public static final String OPERATEUR_ADDITION = "+";
     public static final String OPERATEUR_MULTIPLICATION = "x";
     public static final String OPERATEUR_SOUSTRACTION = "-";
     public static final String OPERATEUR_DIVISION = "÷";
-    private String choixOperateur;
+    private String choixOperateur; // Choix de l'operation élémentaire.
 
-    // Sur quel layout on est (pour la sauvegarde)
+    // STATUT DU LAYOUT (pour pouvoir y retourner en cas de sauvegarde)
     public static final String STATUS_EXERCICE = "Exercice";
     public static final String STATUS_RESULTAT = "Reponse";
     public static final String STATUS_MAIN = "Main";
     private String statusCour;
 
-    //Sauvegarde
+    //ETATS A SAUVEGARDER
     public static final String STATE_NUMEROPAGECOUR = "numeroPageCour";
     public static final String STATE_SCORE = "score";
     public static final String STATE_USER = "user";
@@ -50,12 +49,13 @@ public class JeuMathMenuActivity extends AppCompatActivity {
 
 
 
-    private int rep = 0;
-    private int numeroPageCour = 0;
-    private int score = 0;
+    private int rep = 0;            // Réponse proposé
+    private int numeroPageCour = 0; // Numéro de l'opération dans la liste
+    private int score = 0;          // Score durant cette exercice
 
     private User u;
     private UserDAO uDAO = new UserDAO(this);
+
 
     // MULTIPLICATION
     private static int numeroTabl = 42;
@@ -118,6 +118,10 @@ public class JeuMathMenuActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initialise puis Affiche les exercice en fonction de l'opération élémentaire choisi
+     * @param view Opération élémentaire choisi.
+     */
     public void jeuMathChoix(View view) {
 
         switch(view.getId()) {
@@ -147,6 +151,9 @@ public class JeuMathMenuActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Corrige les réponse au bout de la liste d'opération.
+     */
     public void corriger() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Résultat");
@@ -185,6 +192,9 @@ public class JeuMathMenuActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Affiche l'opération numéro <b>numeroPageCour</b>
+     */
     public void updateView() {
         viewExerciceMath(numeroPageCour);}
 
@@ -204,12 +214,17 @@ public class JeuMathMenuActivity extends AppCompatActivity {
     //          VUES        //
     //////////////////////////
 
-    public void viewExerciceMath(final int numAddDansListe) {
+    /**
+     * Affiche l'oppération d'index <b>numDansListe</b>.
+     * @param numDansListe numéro de l'opération dans la liste.
+     */
+    public void viewExerciceMath(final int numDansListe) {
         statusCour = STATUS_EXERCICE;
+
         //Déclaration et Initialisation variable
-        int nbr1 = Jeu_Math.getNumAt(2 * numAddDansListe);
-        int nbr2 = Jeu_Math.getNumAt(2 * numAddDansListe + 1);
-        rep = Jeu_Math.getReponseAt(numAddDansListe);
+        int nbr1 = Jeu_Math.getNumAt(2 * numDansListe);
+        int nbr2 = Jeu_Math.getNumAt(2 * numDansListe + 1);
+        rep = Jeu_Math.getReponseAt(numDansListe);
 
 
 
@@ -240,7 +255,7 @@ public class JeuMathMenuActivity extends AppCompatActivity {
         // Numero de Page
         TextView numPage = (TextView) findViewById(R.id.Jeu_Math_Exercic_NumPage);
         TextView tw1 = new TextView(this);
-        numPage.setText(numAddDansListe + 1 + "/" + NOMBRE_OPERATIONS);
+        numPage.setText(numDansListe + 1 + "/" + NOMBRE_OPERATIONS);
 
 
 
@@ -249,7 +264,7 @@ public class JeuMathMenuActivity extends AppCompatActivity {
         Button btPrec = (Button) findViewById(R.id.Jeu_Math_Exercice_BoutonPrec);
 
         btPrec.setText("Précedent");
-        if (numAddDansListe == 0) {
+        if (numDansListe == 0) {
             btPrec.setVisibility(View.INVISIBLE);
             btPrec.setClickable(false);
         }
@@ -270,7 +285,7 @@ public class JeuMathMenuActivity extends AppCompatActivity {
             }
         });
 
-        if (numAddDansListe == NOMBRE_OPERATIONS -1) {
+        if (numDansListe == NOMBRE_OPERATIONS -1) {
             btSuiv.setText("Corriger");
             btSuiv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -303,6 +318,9 @@ public class JeuMathMenuActivity extends AppCompatActivity {
         imm.showSoftInput(this.getCurrentFocus(), InputMethodManager.SHOW_FORCED);
     }
 
+    /**
+     * Affiche la vue des résultats.
+     */
     public void viewResultat() {
         statusCour = STATUS_RESULTAT;
         System.out.println("VIEW RESULTAT");

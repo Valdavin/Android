@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Login.FormulaireUser"
+    tools:context=".User.FormulaireUser"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"

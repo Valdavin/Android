@@ -1,4 +1,4 @@
-package com.example.davinv.loustik.Login;
+package com.example.davinv.loustik.User;
 
 import android.content.ContentValues;
 import android.content.Context;

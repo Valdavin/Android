@@ -30,6 +30,13 @@ public class JeuMathClass implements Parcelable{
     };
     public JeuMathClass()  {    }
 
+    /**
+     * Initialise JeuMathClass avec une liste de <b>nbIter</b> nombres de tels sorte
+     * qu'une division renvois une réponse entière entre <b>min</b> et <b>max</b>.
+     * @param nbIter  Nombre d'opération.
+     * @param min Nombre minimum.
+     * @param max Nombre maximum.
+     */
     public void initialiserListeNumDivision (int nbIter, int min, int max) {
         tailleListeNum = nbIter;
         Random rand = new Random();
@@ -49,6 +56,13 @@ public class JeuMathClass implements Parcelable{
 
     }
 
+    /**
+     * Initialise JeuMathClass avec une liste de nbIter nombres
+     * entre min et max.
+     * @param nbIter  Nombre d'opération
+     * @param min Nombre minimum
+     * @param max Nombre maximum
+     */
     public void initialiserListeNum(int nbIter, int min, int max) {
         tailleListeNum = nbIter;
         Random rand = new Random();
@@ -60,18 +74,39 @@ public class JeuMathClass implements Parcelable{
         }
     }
 
+    /**
+     * Enregistre la répnse rep dans la liste de réponse à l'indice numRep.
+     * @param numRep Indice de la réponse.
+     * @param rep réponse donnée.
+     */
     public void setReponseAt(int numRep, int rep) {
         listeReponsesAdd.set(numRep, rep);
     }
 
+    /**
+     * Renvois la réponse contenus dans la liste de réponses à l'indice <b>numRep</b>
+     * @param numRep indice de la réponse
+     * @return Réponse à l'indice numRep
+     */
     public int getReponseAt(int numRep) {
         return listeReponsesAdd.get(numRep);
     }
 
+    /**
+     * Renvois un nombre (opérande) depuis la liste de opérations.
+     * @param i indice du l'opérande
+     * @return L'opérande à l'index <b>i</b>
+     */
     public int getNumAt(int i) {
         return listeNum.get(i);
     }
 
+    /**
+     * Vérifie si la liste des réponse est juste en regard
+     * de la liste des opérande ainsi que de l'opération élémentaire souhaité
+     * @param operateur type d'opération élémentaire
+     * @return vrai si toute la liste réponse est juste.
+     */
     public boolean estJuste(String operateur) {
         boolean toutBon = true;
         for (int i = 0; i<tailleListeNum*2; i=i+2) {
@@ -100,6 +135,12 @@ public class JeuMathClass implements Parcelable{
         return toutBon;
     }
 
+    /**
+     * Vérifie si l'opération numéro i possède une bonne réponse.
+     * @param i Index de la réponse.
+     * @param operateur Opération élémentaire souhaitée.
+     * @return Vrai si la réponse d'index i est juste.
+     */
     public boolean estJusteAt(int i, String operateur) {
         switch (operateur) {
             case "+":
@@ -116,6 +157,11 @@ public class JeuMathClass implements Parcelable{
 
     }
 
+    /**
+     * Retourne le nombre d'erreur fait dans la liste d'opération.
+     * @param operateur Opération élémentaire souhaitée.
+     * @return Le nombre d'erreur(s) commis.
+     */
     public int nbrErreur(String operateur){
         int erreur = 0;
 
@@ -131,6 +177,12 @@ public class JeuMathClass implements Parcelable{
         return erreur;
     }
 
+    /**
+     * Renvois la réponse juste à l'opération d'indice <b>i</b>
+     * @param i Index de l'opération
+     * @param operateur Opération élémentaire souhaitée.
+     * @return La bonne réponse pour l'opération d'index <b>i</b>.
+     */
     public int getBonneReponse(int i, String operateur) {
         switch (operateur) {
             case "+":
@@ -142,7 +194,7 @@ public class JeuMathClass implements Parcelable{
             case "x":
                 return listeNum.get(i*2)*listeNum.get(i*2+1);
             default:
-                return 42;
+                return 42; //Au cas où
         }
     }
 

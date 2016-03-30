@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.davinv.loustik.Login.FormulaireUser;
-import com.example.davinv.loustik.Login.User;
-import com.example.davinv.loustik.Login.UserDAO;
+import com.example.davinv.loustik.User.FormulaireUser;
+import com.example.davinv.loustik.User.User;
+import com.example.davinv.loustik.User.UserDAO;
 
 import java.util.ArrayList;
 
@@ -32,9 +32,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
-
-
+    /**
+     * Se connecte au jeu avec l'user <b>u</b>.
+     * @param u User voulant se connecter.
+     */
     public void connexion(User u) {
         System.out.println("nouvelle user");
         Intent intent = new Intent(this,MenuPrincipalActivity.class);
@@ -42,6 +43,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Démare la vue d'inscription.
+     * @param view Bouton appuyé
+     */
     public void newUser(View view) {
         System.out.println("nouvelle user");
         Intent intent = new Intent(this,FormulaireUser.class);
@@ -60,12 +65,19 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Se connecte en tant qu'anonyme.
+     * @param view Buoton appuyé.
+     */
     public void anonyme(View view) {
         User Uanonyme = listeUsers.get(0);
         connexion(Uanonyme);
 
     }
 
+    /**
+     * Initialise la liste des User déjà existant et les affichent.
+     */
     private void chargerUsers() {
         loginLayout = (LinearLayout) findViewById(R.id.login_layout);
         loginLayout.removeAllViews();
@@ -82,6 +94,11 @@ public class LoginActivity extends AppCompatActivity {
     }
     /////////////
     // VIEW
+
+    /**
+     * Affiche la carte de visite de l'user.
+     * @param u User a afficher.
+     */
     public void ajouterViewUser(final User u) {
         loginLayout = (LinearLayout) findViewById(R.id.login_layout);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

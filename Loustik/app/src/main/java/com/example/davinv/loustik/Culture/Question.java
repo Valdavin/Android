@@ -73,6 +73,13 @@ public class Question implements Parcelable {
         reponseFausse2 = "Jaune fluo"; // C'es très le swag
     }
 
+    /**
+     *
+     * @param question Intitulé de la question.
+     * @param repV Réponse juste.
+     * @param repF1 Réponse fausse.
+     * @param repF2 Réponse fausse.
+     */
     public Question(String question, String repV, String repF1, String repF2) {
         this.question = question;
         reponseVrai = repV;
@@ -81,6 +88,14 @@ public class Question implements Parcelable {
         theme = JeuCultureActivity.THEME_TOUS;
     }
 
+    /**
+     *
+     * @param question Intitulé de la question.
+     * @param repV Réponse juste.
+     * @param repF1 Réponse fausse.
+     * @param repF2 Réponse fausse.
+     * @param th Thême de la question.
+     */
     public Question(String question, String repV, String repF1, String repF2, String th) {
         this.question = question;
         reponseVrai = repV;
@@ -90,9 +105,11 @@ public class Question implements Parcelable {
     }
 
 
+
     public String getTheme() {
         return theme;
     }
+
 
     public void setTheme(String theme) {
         this.theme = theme;
@@ -141,7 +158,10 @@ public class Question implements Parcelable {
     }
 
 
-
+    /**
+     * Retourne une liste mélangée de {@code String} contenant les réponses possibles.
+     * @return Liste contenant les réponse possible mélagées.
+     */
     public ArrayList<String> getReponses() {
         ArrayList<String> listeRep = new ArrayList<String>(3);
         listeRep.add(reponseVrai);
@@ -153,12 +173,22 @@ public class Question implements Parcelable {
         return listeRep;
     }
 
+    /**
+     * Vérifie que la bonne réponse a été donnée.
+     * @param rep Réponse donné
+     * @return Vrai si <b>rep</b> est la bonne réponse
+     */
     public boolean isBonneRep(String rep) {
         return reponseVrai.equals(rep);
     }
 
-    public boolean isBonneRep(Button boutton) {
-        return isBonneRep(boutton.getText().toString());
+    /**
+     * Vérifie que le bon bouton a été appuyée.
+     * @param bouton Bouton appuyée.
+     * @return Vrai si <b>bouton</b> est le bon bouton.
+     */
+    public boolean isBonneRep(Button bouton) {
+        return isBonneRep(bouton.getText().toString());
     }
 
 

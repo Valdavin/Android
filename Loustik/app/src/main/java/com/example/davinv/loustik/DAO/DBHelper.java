@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.davinv.loustik.Culture.QuestionDAO;
-import com.example.davinv.loustik.Login.UserDAO;
+import com.example.davinv.loustik.User.UserDAO;
 
 /**
  * Created by Valentin on 21/03/2016.
