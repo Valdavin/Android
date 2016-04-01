@@ -115,6 +115,10 @@ public class JeuMathMenuActivity extends AppCompatActivity {
             case STATUS_RESULTAT:
                 viewResultat();
                 break;
+            case STATUS_MAIN:
+                Jeu_Math = new JeuMathClass();
+                numeroPageCour = 0;
+                break;
         }
     }
 
@@ -290,6 +294,13 @@ public class JeuMathMenuActivity extends AppCompatActivity {
             btSuiv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (!etReponse.getText().toString().equals("")) {
+                        Jeu_Math.setReponseAt(numeroPageCour, Integer.parseInt(etReponse.getText().toString()));
+
+                    } else {
+                        Jeu_Math.setReponseAt(numeroPageCour, 0);
+                    }
+
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     corriger();
@@ -303,10 +314,8 @@ public class JeuMathMenuActivity extends AppCompatActivity {
                     if (!etReponse.getText().toString().equals("")) {
                         Jeu_Math.setReponseAt(numeroPageCour, Integer.parseInt(etReponse.getText().toString()));
 
-
                     } else {
                         Jeu_Math.setReponseAt(numeroPageCour, 0);
-
                     }
                     numeroPageCour++;
                     updateView();
