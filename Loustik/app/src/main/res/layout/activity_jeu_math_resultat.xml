@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
         <LinearLayout
+            android:background="#C8FFFFFF"
             android:id="@+id/Jeu_Math_Resultat_Layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

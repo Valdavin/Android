@@ -1,15 +1,21 @@
 package com.example.davinv.loustik;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Gravity;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.davinv.loustik.User.FormulaireUser;
+import com.example.davinv.loustik.User.ModifierUser;
 import com.example.davinv.loustik.User.User;
 import com.example.davinv.loustik.User.UserDAO;
 
@@ -17,17 +23,19 @@ import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
     public final static int NEW_USER_REQUEST = 0;
+    public final static int MODIF_USER_REQUEST = 1;
     public final static String NUM_USER = "numUser";
 
     private UserDAO uDAO = new UserDAO(this);
     private ArrayList<User> listeUsers = new ArrayList<>();
     private LinearLayout loginLayout;
+    private View userClicked;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginLayout = (LinearLayout) findViewById(R.id.login_layout);
-        uDAO.open();
+
         chargerUsers();
     }
 
@@ -57,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == NEW_USER_REQUEST) {
+        if (requestCode == NEW_USER_REQUEST || requestCode == MODIF_USER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 chargerUsers();
             }
@@ -81,7 +89,9 @@ public class LoginActivity extends AppCompatActivity {
     private void chargerUsers() {
         loginLayout = (LinearLayout) findViewById(R.id.login_layout);
         loginLayout.removeAllViews();
+        uDAO.open();
         listeUsers = uDAO.selectAll();
+        uDAO.close();
         boolean estLePremier = true;
         for (User u : listeUsers) {
             if (!estLePremier) {
@@ -92,6 +102,44 @@ public class LoginActivity extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.contextual_menu_user,menu);
+        userClicked = v;
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.id_user_modifie) {
+            Intent intent = new Intent(this,ModifierUser.class);
+            intent.putExtra(NUM_USER, (int) userClicked.getTag());
+            startActivityForResult(intent, MODIF_USER_REQUEST);
+        } else if (item.getItemId() == R.id.id_user_delete) {
+            System.out.println("Supprimer");
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Attention !");
+            builder.setMessage("Cet utilisateur seras supprimé définitivement. Voulez-vous continuer ?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            uDAO.open();
+                            uDAO.removeByID((int)userClicked.getTag());
+                            uDAO.close();
+                            chargerUsers();
+                        }
+                    })
+                    .setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+            builder.show();
+        } else {return false;}
+        return true;
+    }
+
     /////////////
     // VIEW
 
@@ -105,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
         params.setMargins(5, 5, 5, 5);
 
         LinearLayout ll = new LinearLayout(this);
+        ll.setTag(u.getId());
         ll.setOrientation(LinearLayout.HORIZONTAL);
         ll.setLayoutParams(params);
         ll.setClickable(true);
@@ -127,6 +176,7 @@ public class LoginActivity extends AppCompatActivity {
 
         ll.addView(iv);
         ll.addView(tw);
+        registerForContextMenu(ll);
 
         loginLayout.addView(ll);
     }

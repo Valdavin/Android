@@ -10,6 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Math.JeuMathExerciceActivity">
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -17,6 +18,8 @@
         android:orientation="horizontal">
 
         <TextView
+            android:background="#C8FFFFFF"
+
             android:id="@+id/Jeu_Math_Exercice_Operation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,6 +27,7 @@
             android:text="5 * 2 = "/>
 
         <EditText
+            android:background="#C8FFFFFF"
             android:id="@+id/Jeu_Math_Exercice_Reponse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

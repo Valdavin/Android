@@ -168,7 +168,6 @@ public class JeuMathMenuActivity extends AppCompatActivity {
         if (!Jeu_Math.estJuste(choixOperateur)) {
             int nbrerreur = Jeu_Math.nbrErreur(choixOperateur);
             builder.setMessage("Aoutch, tu as fait " + nbrerreur + " erreur(s)")
-                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton("Passer", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             recreate();

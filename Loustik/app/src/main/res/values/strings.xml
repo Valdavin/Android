@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Loustik</string>
     <string name="action_settings">Settings</string>
+    <string name="user_modif">Modifier</string>
+    <string name="user_delete">Supprimer</string>
+
+    <string-array name="avatar_user">
+        <item>avatar1</item>
+        <item>avatar2</item>
+        <item>avatar3</item>
+        <item>avatar4</item>
+        <item>avatar5</item>
+        <item>avatar6</item>
+        <item>avatar7</item>
+        <item>avatar8</item>
+        <item>avatar9</item>
+    </string-array>
 </resources>

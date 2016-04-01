@@ -27,7 +27,8 @@
             android:name=".User.FormulaireUser"
             android:label="Nouveau Compte" />
         <activity android:name=".Math.JeuMathExerciceActivity" />
-        <activity android:name=".Culture.PropositionQuestionActivity"></activity>
+        <activity android:name=".Culture.PropositionQuestionActivity" />
+        <activity android:name=".User.ModifierUser"></activity>
     </application>
 
 </manifest>

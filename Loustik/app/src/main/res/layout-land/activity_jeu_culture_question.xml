@@ -17,6 +17,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:background="#C8FFFFFF"
             android:id="@+id/Jeu_Culture_Question_Intitule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

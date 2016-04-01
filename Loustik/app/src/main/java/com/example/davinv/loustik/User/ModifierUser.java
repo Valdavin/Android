@@ -8,13 +8,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.example.davinv.loustik.LoginActivity;
 import com.example.davinv.loustik.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FormulaireUser extends AppCompatActivity {
+public class ModifierUser extends AppCompatActivity {
+
+    private User u;
+    private UserDAO uDAO = new UserDAO(this);
     private ArrayList<String> listeAvatar = new ArrayList<>();
     private LinearLayout layoutAvatar;
     private ImageView avatarSelectione;
@@ -23,22 +28,23 @@ public class FormulaireUser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulaire_user);
+        int userNum = getIntent().getIntExtra(LoginActivity.NUM_USER,0);
         layoutAvatar = (LinearLayout) findViewById(R.id.ll_choix_avatar);
-        initialiserAvatar();
+        uDAO.open();
+        u = uDAO.retrieveByID(userNum);
+        uDAO.close();
 
+        initialiserAvatar();
+        initialiserChamps();
 
     }
-
-    /**
-     * Initialise la liste des avatar disponible.
-     */
     private void initialiserAvatar() {
         String[] lista = getResources().getStringArray(R.array.avatar_user);
         listeAvatar = new ArrayList(Arrays.asList(lista));
         for (String s : listeAvatar) {
             ImageView iw = new ImageView(this);
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(300, 300);
-            param.setMargins(5,5,5,5);
+            param.setMargins(5, 5, 5, 5);
             iw.setLayoutParams(param);
             iw.setImageResource(getResources().getIdentifier(s, "drawable", this.getPackageName()));
             iw.setClickable(true);
@@ -54,15 +60,26 @@ public class FormulaireUser extends AppCompatActivity {
                     v.setBackgroundResource(R.drawable.rebordchoix);
                 }
             });
+            System.out.print("ModifierUser - initialiserAvatar() : Avatar de l'user = " + u.getAvatar() + ", Avatar initialiser = " + s);
+            if (s.equals(u.getAvatar())) {
+                avatarSelectione = iw;
+                iw.setBackgroundResource(R.drawable.rebordchoix);
+                System.out.println(" -- Et c'est le bon !");
+            } else {
+                System.out.println(" -- Et ce n'est pas le bon ...");
+            }
             layoutAvatar.addView(iw);
         }
 
     }
 
-    /**
-     * Vérifie que tout les champs sont remplis et valise l'inscription.
-     * @param view Bouton appuyé
-     */
+    private void initialiserChamps(){
+        TextView prenom = (TextView) findViewById(R.id.newUserPrenom);
+        TextView nom = (TextView) findViewById(R.id.newUserNom);
+        prenom.setText(u.getPrenom());
+        nom.setText(u.getNom());
+    }
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void newUserValider(View view) {
         // Maj affichage
@@ -75,10 +92,12 @@ public class FormulaireUser extends AppCompatActivity {
         String nom = ((EditText) findViewById(R.id.newUserNom)).getText().toString();
         String prenom = ((EditText) findViewById(R.id.newUserPrenom)).getText().toString();
         if (avatarSelectione != null && !nom.equals("") && !prenom.equals("")) {
-            User newUser = new User(nom,prenom,(String) avatarSelectione.getTag());
+            u.setPrenom(prenom);
+            u.setNom(nom);
+            u.setAvatar((String) avatarSelectione.getTag());
             UserDAO uDAO = new UserDAO(this);
             uDAO.open();
-            uDAO.insert(newUser);
+            uDAO.update(u);
             uDAO.close();
             setResult(RESULT_OK);
             super.finish();
@@ -96,4 +115,6 @@ public class FormulaireUser extends AppCompatActivity {
 
 
     }
+
+
 }
