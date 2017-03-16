@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Loustik.iml" filepath="$PROJECT_DIR$/Loustik.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Loustik.iml" filepath="$PROJECT_DIR$/Loustik.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EndYearProject.iml" filepath="$PROJECT_DIR$/EndYearProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
