@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">EndYearProject</string>
     <string name="result_text_default">Please focus camera to QR Code</string>
+    <string name="productListId">ID</string>
+    <string name="productListName">Product Name</string>
+    <string name="productListBarcode">Barcode</string>
 </resources>
