@@ -21,27 +21,32 @@ public class ProductDAO extends DAOBase {
     public static final String COL_ID = "id";
     public static final String COL_PRODUCTNAME = "product_name";
     public static final String COL_BARCODE = "barcode";
+    public static final String COL_PRICE = "price";
+    public static final String COL_IDLISTPRODUCTS = "id_listproducts";
 
-    // retourne une chaîne de caractères représentant une instruction SQL de création de la table Product
+    // retourne une chaîne de caractères représentant une instruction SQL de création de la table User
     public static final String CREATE_TABLE =
             "CREATE TABLE " + DBNAME + " (" +
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COL_PRODUCTNAME + " TEXT NOT NULL, " +
-                    COL_BARCODE + " TEXT NOT NULL);";
+                    COL_BARCODE + " TEXT NOT NULL, " +
+                    COL_PRICE + " FLOAT, " +
+                    COL_IDLISTPRODUCTS + " INTEGER" +");";
 
-    // retourne une chaîne de caractères représentant une instruction SQL de création de la table Product
+    // retourne une chaîne de caractères représentant une instruction SQL de création de la table User
     public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + DBNAME + ";";
 
 
     // Données pour la table
-    private static final String[] DATA = new String[] {
-            "'Water', '042421337'"};
+    private static final String[] DATA = new String[] {};
 
     // retourne une liste de chaînes de caractères représentant les instructions SQL d'insertion de données dans la table
     public static String[] getInsertSQL() {
         String insertSQL = "INSERT INTO " + DBNAME + "("
                 + COL_BARCODE + ", "
-                + COL_PRODUCTNAME + ") VALUES ";
+                + COL_PRODUCTNAME + ", "
+                + COL_PRICE + ", "
+                + COL_IDLISTPRODUCTS + ") VALUES ";
 
         //
         String[] liste = new String[DATA.length];
@@ -70,6 +75,9 @@ public class ProductDAO extends DAOBase {
         // Ajout clé/valeur : colonne/valeur
         values.put(COL_BARCODE, product.getBarcode());
         values.put(COL_PRODUCTNAME, product.getProductName());
+        values.put(COL_PRICE, product.getPrice());
+        values.put(COL_IDLISTPRODUCTS, product.getIdListProducts());
+
 
         // Insertion de l'objet dans la BD via le ContentValues
         return getDB().insert(DBNAME, null, values);
@@ -83,6 +91,8 @@ public class ProductDAO extends DAOBase {
         // Ajout clé/valeur : colonne/valeur
         values.put(COL_BARCODE, product.getBarcode());
         values.put(COL_PRODUCTNAME, product.getProductName());
+        values.put(COL_PRICE, product.getPrice());
+        values.put(COL_IDLISTPRODUCTS, product.getIdListProducts());
 
         // Insertion de l'objet dans la BD via le ContentValues et l'identifiant
         return getDB().update(DBNAME, values, COL_ID + " = " + product.getId(), null);
@@ -103,6 +113,14 @@ public class ProductDAO extends DAOBase {
 
         //Récupère dans un Cursor les valeur correspondant à des enregistrements de product contenu dans la BD
         Cursor cursor = getDB().rawQuery("SELECT * FROM " + DBNAME, null);
+
+        return cursorToListProduct(cursor);
+    }
+
+    public ArrayList<Product> selectByListProductsId(int lpid) {
+
+        //Récupère dans un Cursor les valeur correspondant à une product contenu dans la BD à l'aide de son id
+        Cursor cursor = getDB().rawQuery("SELECT * FROM " + DBNAME + " WHERE " + COL_IDLISTPRODUCTS + "=?", new String[]{Integer.toString(lpid)});
 
         return cursorToListProduct(cursor);
     }
@@ -130,6 +148,8 @@ public class ProductDAO extends DAOBase {
         int indexId = cursor.getColumnIndex(COL_ID);
         int indexProductName = cursor.getColumnIndex(COL_PRODUCTNAME);
         int indexBarcode = cursor.getColumnIndex(COL_BARCODE);
+        int indexPrice = cursor.getColumnIndex(COL_PRICE);
+        int indexIdListProducts = cursor.getColumnIndex(COL_IDLISTPRODUCTS);
 
 
         // Declaration et initialisation d'une liste de product
@@ -142,6 +162,8 @@ public class ProductDAO extends DAOBase {
             product.setId(cursor.getInt(indexId));
             product.setProductName(cursor.getString(indexProductName));
             product.setBarcode(cursor.getString(indexBarcode));
+            product.setPrice(cursor.getFloat(indexPrice));
+            product.setIdListProducts(cursor.getInt(indexIdListProducts));
 
             // Ajout dans la liste
             liste.add(product);
@@ -161,6 +183,8 @@ public class ProductDAO extends DAOBase {
         int indexId = cursor.getColumnIndex(COL_ID);
         int indexProductName = cursor.getColumnIndex(COL_PRODUCTNAME);
         int indexBarcode = cursor.getColumnIndex(COL_BARCODE);
+        int indexPrice = cursor.getColumnIndex(COL_PRICE);
+        int indexIdListProducts = cursor.getColumnIndex(COL_IDLISTPRODUCTS);
 
 
         // Declaration d'une product
@@ -174,7 +198,8 @@ public class ProductDAO extends DAOBase {
             product.setId(cursor.getInt(indexId));
             product.setProductName(cursor.getString(indexProductName));
             product.setBarcode(cursor.getString(indexBarcode));
-
+            product.setPrice(cursor.getInt(indexPrice));
+            product.setIdListProducts(cursor.getInt(indexIdListProducts));
         }
 
         // Fermeture du cursor

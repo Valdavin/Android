@@ -1,10 +1,12 @@
 package com.example.valentin.endyearproject.product;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.valentin.endyearproject.ListProducts.ListProductsActivity;
 import com.example.valentin.endyearproject.R;
 
 import java.util.ArrayList;
@@ -13,12 +15,16 @@ import java.util.ArrayList;
  * Created by Valentin on 19/03/2017.
  */
 
-public class ListProductActivity extends AppCompatActivity {
-
+public class ProductListActivity extends AppCompatActivity {
+    private int idUser;
+    private int idLp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liste_product);
+        Intent intent = getIntent();
+        idUser = intent.getIntExtra(ListProductsActivity.NUM_USER,0);
+        idLp = intent.getIntExtra(ListProductsActivity.NUM_LISTPRODUCTS,0);
         initList();
     }
 
@@ -57,7 +63,7 @@ public class ListProductActivity extends AppCompatActivity {
         ProductDAO pDAO = new ProductDAO(this);
 
         pDAO.open();
-        ArrayList<Product> listProducts = pDAO.selectAll();
+        ArrayList<Product> listProducts = pDAO.selectByListProductsId(idLp);
         pDAO.close();
 
         for (Product p :listProducts) {
@@ -81,7 +87,7 @@ public class ListProductActivity extends AppCompatActivity {
 
 
         //Text View for ID
-        LinearLayout.LayoutParams paramID = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,0.2f);
+        LinearLayout.LayoutParams paramID = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,0f);
         paramID.setMargins((int)(10*d),(int)(10*d),(int)(10*d),(int)(10*d));
 
         TextView tw_id = new TextView(this);
@@ -90,7 +96,7 @@ public class ListProductActivity extends AppCompatActivity {
         tw_id.setTextSize(20f);
 
         //Text View for Product Name
-        LinearLayout.LayoutParams paramProductName = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,0.4f);
+        LinearLayout.LayoutParams paramProductName = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f);
         paramProductName.setMargins((int)(10*d),(int)(10*d),(int)(10*d),(int)(10*d));
 
         TextView tw_ProductName = new TextView(this);
@@ -98,20 +104,20 @@ public class ListProductActivity extends AppCompatActivity {
         tw_ProductName.setText(p.getProductName());
         tw_ProductName.setTextSize(20f);
 
-        //Text View for Barcode
-        LinearLayout.LayoutParams paramBarcode = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,0.4f);
-        paramBarcode.setMargins((int)(10*d),(int)(10*d),(int)(10*d),(int)(10*d));
-
-        TextView tw_Barcode = new TextView(this);
-        tw_Barcode.setLayoutParams(paramBarcode);
-        tw_Barcode.setText(p.getBarcode());
-        tw_Barcode.setTextSize(20f);
+        //Text View for Price
+        LinearLayout.LayoutParams paramPrice = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,0f);
+        paramPrice.setMargins((int)(10*d),(int)(10*d),(int)(10*d),(int)(10*d));
+        TextView tw_Price = new TextView(this);
+        tw_Price.setLayoutParams(paramPrice);
+        tw_Price.setText(String.valueOf(p.getPrice()));
+        tw_Price.setTextSize(20f);
 
         //Put all content in the good Layout
 
         ll.addView(tw_id);
-        ll.addView(tw_Barcode);
         ll.addView(tw_ProductName);
+        ll.addView(tw_Price);
+
 
         mainLayout.addView(ll);
 

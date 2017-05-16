@@ -4,4 +4,6 @@
     <string name="productListId">ID</string>
     <string name="productListName">Product Name</string>
     <string name="productListBarcode">Barcode</string>
+    <string name="price">Price</string>
+    <string name="title_activity_list_products">ListProductsActivity</string>
 </resources>

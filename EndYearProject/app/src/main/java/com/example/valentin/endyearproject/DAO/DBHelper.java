@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.valentin.endyearproject.ListProducts.ListProductsDAO;
+import com.example.valentin.endyearproject.user.UserDAO;
 import com.example.valentin.endyearproject.product.ProductDAO;
 
 /**
@@ -29,14 +31,20 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        // Créer la table question
+        // Create Table
         db.execSQL(ProductDAO.CREATE_TABLE);
+        db.execSQL(UserDAO.CREATE_TABLE);
+        db.execSQL(ListProductsDAO.CREATE_TABLE);
 
         // Insérer les données
+
         for (String insert : ProductDAO.getInsertSQL()) {
             db.execSQL(insert);
         }
 
+        for (String insert : UserDAO.getInsertSQL()) {
+            db.execSQL(insert);
+        }
     }
 
     @Override
@@ -48,7 +56,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 + newVersion + ", WHICH WILL DESTROY ALL OLD DATA !");
 
         // DROP
+        db.execSQL(ListProductsDAO.DROP_TABLE);
         db.execSQL(ProductDAO.DROP_TABLE);
+        db.execSQL(UserDAO.DROP_TABLE);
+
 
         // Relancer la création
         onCreate(db);

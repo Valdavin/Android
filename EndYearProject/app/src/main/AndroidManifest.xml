@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.valentin.endyearproject">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,18 +13,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".scanner" />
-        <activity android:name=".product.ListProductActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".product.ProductListActivity" />
+        <activity android:name=".MainActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
+
+        <activity android:name=".userLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
-
+        <activity android:name=".ListProducts.ListProductsListActivity" />
+        <activity android:name=".user.newUserActivity" />
+        <activity
+            android:name=".ListProducts.ListProductsActivity"
+            android:label="@string/title_activity_list_products"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
-
 
 </manifest>
